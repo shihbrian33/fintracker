@@ -4,8 +4,10 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from model_utils import Choices
+import uuid
 
 class CreditCard(models.Model):
+    id = models.UUIDField(primary_key= True, default = uuid.uuid4, editable = False)
     name = models.CharField(max_length=100)
     TYPES = Choices(
         (1, 'Mastercard'),
