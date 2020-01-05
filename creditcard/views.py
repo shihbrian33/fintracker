@@ -6,7 +6,7 @@ from django.forms import widgets
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 
-class CardListView(ListView):
+class CardListView(LoginRequiredMixin, ListView):
     model = CreditCard
     context_object_name = 'CreditCards'
     ordering = ['-active']
