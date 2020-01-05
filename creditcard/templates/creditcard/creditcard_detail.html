@@ -1,0 +1,28 @@
+{% extends "creditcard/base.html" %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <h2>{{ object.name }}</h2>
+                {% if object.active == 1 %}
+                <a class="float-right activeStatus">Active</a>
+                {% else %}
+                <a class="float-right cancelledStatus">Cancelled</a>
+                {% endif %}
+                <small class="text-muted">{{ object.date_posted }}</small>
+                <div>
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'cc-update' object.id %}">Update</a>
+                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'cc-delete' object.id %}">Delete Card</a>
+                </div>
+            </div>
+            <p class="article-content">
+                Credit Limit: {{ object.limit }}<br/>
+                Type: {{ object.TYPES.1 }}<br/>
+                Date Approved: {{ object.date_activated }}<br/>
+                Date Cancelled: {{ object.date_cancelled }}<br/>
+                Incentive: {{ object.incentive }}<br/>
+                <div>Notes: {{ object.notes }}</div>
+            </p>
+        </div>
+    </article>
+{% endblock content %}

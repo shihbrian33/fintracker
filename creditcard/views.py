@@ -1,39 +1,66 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import CreditCard
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.forms import widgets
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-posts = [
-    {
-        'author': 'BrianS',
-        'name': 'Rogers World Elite',
-        'type': 'Mastercard',
-        'limit': 1000,
-        'date_posted': 'January 5, 2020',
-        'date_approved': 'January 1, 2020',
-        'date_cancelled': '',
-        'active': 1,
-        'incentive': '1.75% Cashback on everything',
-        'notes': '4%% cashback on foreign purchases'
-    },
-    {
-        'author': 'BrianS',
-        'name': 'Scotiabank World Elite',
-        'type': 'Mastercard',
-        'limit': 5000,
-        'date_posted': 'January 7, 2020',
-        'date_approved': 'January 11, 2020',
-        'date_cancelled': 'January 11, 2021',
-        'active': 0,
-        'incentive': '10% Cashback on first 2k',
-        'notes': ''
-    }    
-]
+class CardListView(ListView):
+    model = CreditCard
+    context_object_name = 'CreditCards'
+    ordering = ['-active']
 
-def home(request):
-    context = {
-        'CreditCards': CreditCard.objects.all()
-    }
-    return render(request, 'creditcard/home.html', context)
+    def get_queryset(self):
+        user = self.request.user
+        return CreditCard.objects.filter(author=user)
+
+
+class CardDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = CreditCard
+
+    def test_func(self):
+        card = self.get_object()
+        if self.request.user == card.author:
+            return True
+        return False
+
+class CardCreateView(LoginRequiredMixin, CreateView):
+    model = CreditCard
+    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_form(self):
+        form = super().get_form()
+        form.fields['date_activated'].widget = widgets.SelectDateWidget()
+        form.fields['date_cancelled'].widget = widgets.SelectDateWidget()
+        return form
+
+class CardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = CreditCard
+    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        card = self.get_object()
+        if self.request.user == card.author:
+            return True
+        return False
+
+class CardDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = CreditCard
+    success_url = '/'
+    
+    def test_func(self):
+        card = self.get_object()
+        if self.request.user == card.author:
+            return True
+        return False
 
 def about(request):
     return render(request, 'creditcard/about.html')
