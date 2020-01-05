@@ -4,6 +4,7 @@ from .models import CreditCard
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.forms import widgets
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 
 class CardListView(ListView):
     model = CreditCard
