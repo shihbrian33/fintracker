@@ -1,0 +1,23 @@
+{% extends "creditcard/base.html" %}
+{% block content %}
+    {% for cc in CreditCards %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ cc.name }}</a>
+              {% if cc.active == 1 %}
+                <a class="float-right activeStatus">Active</a>
+              {% else %}
+                <a class="float-right cancelledStatus">Cancelled</a>
+              {% endif %}
+              <small class="text-muted">{{ cc.date_posted }}</small>
+            </div>
+            <p class="article-content">
+                Credit Limit: {{ cc.limit }}<br/>
+                Date Approved: {{ cc.date_activated }}<br/>
+                Incentive: {{ cc.incentive }}
+            </p>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
