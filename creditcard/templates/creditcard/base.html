@@ -22,6 +22,7 @@
   <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
   <link href="{% static 'creditcard/main.css' %}" rel="stylesheet">
 
+  {% block header %}{% endblock %}
 </head>
 
 <body id="page-top">
@@ -177,10 +178,7 @@
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/sb-admin.min.js' %}"></script>
 
-  <!-- Demo scripts for this page-->
-  <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
-  <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
-
+  {% block script %}{% endblock %}
 </body>
 
 </html>

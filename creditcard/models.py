@@ -21,7 +21,7 @@ class CreditCard(models.Model):
     limit = models.IntegerField(validators=[MinValueValidator(1)])
     date_posted = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
-    date_activated = models.DateField(blank=True, null=True)
+    date_activated = models.DateField()
     date_cancelled = models.DateField(blank=True, null=True)
     date_reminder = models.DateField(blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)

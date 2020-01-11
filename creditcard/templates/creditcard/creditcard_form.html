@@ -1,17 +1,156 @@
 {% extends "creditcard/base.html" %}
-{{ form.media }}
-{% load crispy_forms_tags %}
+{% block header %}
+    <!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
+    <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" /> 
+{% endblock header %}
+
 {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Credit Card</legend>
-                {{ form|crispy }}
-            </fieldset>
+<!-- HTML Form (wrapped in a .bootstrap-iso div) -->
+<div class="card">
+    <div class="card-header">
+        {% if context.name is not None %}
+            Update Card Information
+        {% else %}
+            Create New Card
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+        <div class="bootstrap-iso my-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group ">
+                            <label class="control-label requiredField" for="id_name">
+                            Name
+                            <span class="asteriskField">
+                            *
+                            </span>
+                            </label>
+                            <input class="form-control" id="id_name" name="name" type="text" value="{{ context.name }}"/>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group ">
+                            <label class="control-label requiredField" for="id_type">
+                            Card Type
+                            <span class="asteriskField">
+                            *
+                            </span>
+                            </label>
+                            <select class="select form-control" id="id_type" name="type" >
+                                <option value="1" {% if context.type == 1 %}selected=""{% endif %}>Mastercard </option> 
+                                <option value="2" {% if context.type == 2 %}selected=""{% endif %}>Visa</option> 
+                                <option value="3" {% if context.type == 3 %}selected=""{% endif %}>American Express</option> 
+                                <option value="4" {% if context.type == 4 %}selected=""{% endif %}>Other </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group ">
+                            <label class="control-label requiredField" for="id_limit">
+                            Credit Limit
+                            <span class="asteriskField">
+                            *
+                            </span>
+                            </label>
+                            <input class="form-control" id="id_limit" name="limit" type="text" placeholder="0" value="{{ context.limit }}"/>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group ">
+                            <label class="control-label requiredField" for="id_annualfee">
+                                Annual Fee
+                                <span class="asteriskField">
+                                *
+                                </span>
+                            </label>
+                            <input class="form-control" id="id_annualfee" name="annualfee" placeholder="0" type="text" value="{{ context.annualfee }}"/>
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group ">
+                        <label class="control-label requiredField" for="id_date_activated">
+                            Activation Date
+                            <span class="asteriskField">
+                            *
+                            </span>
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                            </div>
+                            <input class="form-control dateinput" id="id_date_activated" name="date_activated" placeholder="MM/DD/YYYY" type="text" value="{{ context.date_activated|date:"m/d/yy" }}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group ">
+                        <label class="control-label " for="id_date_cancelled">
+                            Cancellation Date
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                            </div>
+                            <input class="form-control dateinput" id="id_date_cancelled" name="date_cancelled" placeholder="MM/DD/YYYY" type="text" 
+                                value="{% if context.date_cancelled is not None %}{{ context.date_cancelled|date:"m/d/yy" }}{% endif %}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group ">
+                        <label class="control-label " for="id_incentive">
+                        Incentive
+                        </label>
+                        <textarea class="form-control" cols="40" id="id_incentive" name="incentive" placeholder="e.g. 10% cashback on first $2000" rows="10">{{ context.incentive }}</textarea>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group ">
+                        <label class="control-label " for="incentive_notes">
+                        Notes
+                        </label>
+                        <textarea class="form-control" cols="40" id="id_notes" name="notes" rows="10">{{ context.notes }}</textarea>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Submit</button>
+                <div>
+                <button class="btn btn-primary " name="submit" type="submit">
+                Submit
+                </button>
+                </div>
             </div>
         </form>
     </div>
+</div>
 {% endblock content %}
+
+{% block script %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+<script>
+    $.fn.datepicker.defaults.format = "mm/dd/yyyy";
+    $('#id_date_activated').datepicker();
+    $('#id_date_cancelled').datepicker();
+</script>
+
+{% endblock script %}

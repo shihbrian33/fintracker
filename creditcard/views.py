@@ -6,6 +6,8 @@ from django.forms import widgets
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 
+name_map = {'annualfee': 'Annual Fee'}
+
 class CardListView(LoginRequiredMixin, ListView):
     model = CreditCard
     context_object_name = 'ActiveCC'
@@ -32,24 +34,22 @@ class CardDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 class CardCreateView(LoginRequiredMixin, CreateView):
     model = CreditCard
-    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes']
+    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes', 'annualfee']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        form.instance.active = form.instance.date_cancelled is None
         return super().form_valid(form)
 
-    def get_form(self):
-        form = super().get_form()
-        form.fields['date_activated'].widget = widgets.SelectDateWidget()
-        form.fields['date_cancelled'].widget = widgets.SelectDateWidget()
-        return form
 
 class CardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = CreditCard
-    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes']
+    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes', 'annualfee']
+    context_object_name = 'context'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        form.instance.active = form.instance.date_cancelled is None
         return super().form_valid(form)
 
     def test_func(self):
@@ -57,6 +57,12 @@ class CardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == card.author:
             return True
         return False
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(CardUpdateView, self).get_context_data(*args, **kwargs)
+        context['name_mapping'] = name_map
+        return context
+
 
 class CardDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CreditCard

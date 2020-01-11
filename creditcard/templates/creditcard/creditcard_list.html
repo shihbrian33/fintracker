@@ -15,7 +15,7 @@
     {% for cc in ActiveCC %}
       <div class="col-xl-3 col-sm-6 my-3"> 
         <div class="card text-white bg-active o-hidden vh-15">
-          <div class="card-body">
+          <a class="card-body stretched-link text-decoration-none text-white" href="/card/{{cc.pk}}">
             <div class="card-body-icon">
               <i class=" 
               {% if cc.type == 1 %} 
@@ -29,8 +29,8 @@
               {% endif %}" ></i>
             </div>
             <div class="mr-5"><h5>{{ cc.name }}</h5></div>
-          </div>
-          <a class="card-footer text-white clearfix small z-1" href="/card/{{cc.pk}}">
+          </a>
+          <a class="card-footer stretched-link text-white clearfix small z-1" href="/card/{{cc.pk}}">
             <span class="float-left">View Details</span>
             <span class="float-right">
               <i class="fas fa-angle-right"></i>
@@ -54,31 +54,31 @@
 <div class="collapse show" id="InactiveCards">
   <div class="row">
     {% for cc in InactiveCC %}
-      <div class="col-xl-3 col-sm-6 my-3">
-        <div class="card text-white bg-inactive o-hidden vh-15">
-          <div class="card-body">
-            <div class="card-body-icon">
-              <i class=" 
-              {% if cc.type == 1 %} 
-                fab fa-cc-mastercard 
-              {% elif cc.type == 2 %}
-                fab fa-cc-visa
-              {% elif cc.type == 3 %} 
-                fab fa-cc-amex
-              {% else %}
-                fas fa-credit-card
-              {% endif %}" ></i>
-            </div>
-            <div class="mr-5"><h5>{{ cc.name }}</h5></div>
+    <div class="col-xl-3 col-sm-6 my-3"> 
+      <div class="card text-white bg-inactive o-hidden vh-15">
+        <a class="card-body stretched-link text-decoration-none text-white" href="/card/{{cc.pk}}">
+          <div class="card-body-icon">
+            <i class=" 
+            {% if cc.type == 1 %} 
+              fab fa-cc-mastercard 
+            {% elif cc.type == 2 %}
+              fab fa-cc-visa
+            {% elif cc.type == 3 %} 
+              fab fa-cc-amex
+            {% else %}
+              fas fa-credit-card
+            {% endif %}" ></i>
           </div>
-          <a class="card-footer text-white clearfix small z-1" href="/card/{{cc.pk}}">
-            <span class="float-left">View Details</span>
-            <span class="float-right">
-              <i class="fas fa-angle-right"></i>
-            </span>
-          </a>
-        </div>
+          <div class="mr-5"><h5>{{ cc.name }}</h5></div>
+        </a>
+        <a class="card-footer stretched-link text-white clearfix small z-1" href="/card/{{cc.pk}}">
+          <span class="float-left">View Details</span>
+          <span class="float-right">
+            <i class="fas fa-angle-right"></i>
+          </span>
+        </a>
       </div>
+    </div>
     {% endfor %} 
   </div>
 </div>
