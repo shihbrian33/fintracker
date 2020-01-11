@@ -26,6 +26,7 @@ class CreditCard(models.Model):
     active = models.BooleanField(default=True)
     incentive = models.TextField(blank=True)
     notes = models.TextField(blank=True)
+    annualfee = models.IntegerField(default=0)
     
     def __str__(self):
         return self.name
