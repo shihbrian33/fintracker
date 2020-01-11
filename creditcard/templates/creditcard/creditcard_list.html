@@ -1,23 +1,85 @@
 {% extends "creditcard/base.html" %}
 {% block content %}
-    {% for cc in CreditCards %}
-        <article class="media content-section">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="/card/{{cc.pk}}">{{ cc.name }}</a>
-              {% if cc.active == 1 %}
-                <a class="float-right activeStatus">Active</a>
+<div class="card bg-secondary mb-1">
+  <a class="card-block stretched-link text-decoration-none text-white" data-toggle="collapse" href="#ActiveCards" aria-expanded="true">
+    <div class="card-header">
+      <strong>Active Cards</strong>
+      <span class="float-right">
+        <i class="fa" aria-hidden="true"></i>
+      </span>
+    </div>
+  </a>
+</div>
+<div class="collapse show" id="ActiveCards">
+  <div class="row">
+    {% for cc in ActiveCC %}
+      <div class="col-xl-3 col-sm-6 my-3"> 
+        <div class="card text-white bg-active o-hidden vh-15">
+          <div class="card-body">
+            <div class="card-body-icon">
+              <i class=" 
+              {% if cc.type == 1 %} 
+                fab fa-cc-mastercard 
+              {% elif cc.type == 2 %}
+                fab fa-cc-visa
+              {% elif cc.type == 3 %} 
+                fab fa-cc-amex
               {% else %}
-                <a class="float-right cancelledStatus">Cancelled</a>
-              {% endif %}
-              <small class="text-muted">{{ cc.date_posted }}</small>
+                fas fa-credit-card
+              {% endif %}" ></i>
             </div>
-            <p class="article-content">
-                Credit Limit: {{ cc.limit }}<br/>
-                Date Approved: {{ cc.date_activated }}<br/>
-                Incentive: {{ cc.incentive }}
-            </p>
+            <div class="mr-5"><h5>{{ cc.name }}</h5></div>
           </div>
-        </article>
-    {% endfor %}
+          <a class="card-footer text-white clearfix small z-1" href="/card/{{cc.pk}}">
+            <span class="float-left">View Details</span>
+            <span class="float-right">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    {% endfor %} 
+  </div>
+</div>
+<div class="card bg-secondary mb-1">
+  <a class="card-block stretched-link text-decoration-none text-white" data-toggle="collapse" href="#InactiveCards" aria-expanded="true">
+    <div class="card-header">
+      <strong>Cancelled Cards</strong>
+      <span class="float-right">
+        <i class="fa" aria-hidden="true"></i>
+      </span>
+    </div>
+  </a>
+</div>
+<div class="collapse show" id="InactiveCards">
+  <div class="row">
+    {% for cc in InactiveCC %}
+      <div class="col-xl-3 col-sm-6 my-3">
+        <div class="card text-white bg-inactive o-hidden vh-15">
+          <div class="card-body">
+            <div class="card-body-icon">
+              <i class=" 
+              {% if cc.type == 1 %} 
+                fab fa-cc-mastercard 
+              {% elif cc.type == 2 %}
+                fab fa-cc-visa
+              {% elif cc.type == 3 %} 
+                fab fa-cc-amex
+              {% else %}
+                fas fa-credit-card
+              {% endif %}" ></i>
+            </div>
+            <div class="mr-5"><h5>{{ cc.name }}</h5></div>
+          </div>
+          <a class="card-footer text-white clearfix small z-1" href="/card/{{cc.pk}}">
+            <span class="float-left">View Details</span>
+            <span class="float-right">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    {% endfor %} 
+  </div>
+</div>
 {% endblock content %}

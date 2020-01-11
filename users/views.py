@@ -3,6 +3,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from .tokens import account_activation_token
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
@@ -10,6 +11,23 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+
+def login_user(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect('cc-home')
+        return render(request, 'users/login.html')
+    elif request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('cc-home')
+        else:
+            messages.error(request, f'Incorrect username/password')
+            return redirect('login')
 
 def register(request):
     if request.method == 'POST':

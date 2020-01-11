@@ -8,12 +8,17 @@ from django.contrib.auth.models import User
 
 class CardListView(LoginRequiredMixin, ListView):
     model = CreditCard
-    context_object_name = 'CreditCards'
-    ordering = ['-active']
+    context_object_name = 'ActiveCC'
 
     def get_queryset(self):
         user = self.request.user
-        return CreditCard.objects.filter(author=user)
+        return CreditCard.objects.filter(author=user,active=1).order_by('type')
+    
+    def get_context_data(self, *args, **kwargs):
+        user = self.request.user
+        context = super(CardListView, self).get_context_data(*args, **kwargs)
+        context['InactiveCC'] = CreditCard.objects.filter(author=user,active=0).order_by('type')
+        return context
 
 
 class CardDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
