@@ -1,50 +1,198 @@
 {% extends "creditcard/base.html" %}
 {% block content %}
-    <article class="media content-section">
-        <div class="media-body">
-            <div class="article-metadata">
-                <h2>{{ object.name }}</h2>
-                {% if object.active == 1 %}
-                <a class="float-right activeStatus">Active</a>
-                {% else %}
-                <a class="float-right cancelledStatus">Cancelled</a>
-                {% endif %}
-                <small class="text-muted">{{ object.date_posted }}</small>
-                <div>
-                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'cc-update' object.id %}">Update</a>
-                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'cc-delete' object.id %}" 
-                    data-toggle="modal" data-target="#DeleteModal">Delete Card</a>
-                </div>
-            </div>
-            <p class="article-content">
-                Credit Limit: {{ object.limit }}<br/>
-                Type: {{ object.TYPES.1 }}<br/>
-                Date Approved: {{ object.date_activated }}<br/>
-                Date Cancelled: {{ object.date_cancelled }}<br/>
-                Incentive: {{ object.incentive }}<br/>
-                <div>Notes: {{ object.notes }}</div>
-            </p>
-        </div>
-    </article>
+<div class="card">
+  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h2 class="m-0 font-weight-bold">{{ object.name }}</h2>
+    <div class="dropdown no-arrow">
+      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-header">Actions</div>
+        <a class="dropdown-item" href="{% url 'cc-update' object.id %}">Update</a>
+        <a class="dropdown-item" data-toggle="modal" data-target="#InfoModal">History</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item dropdown-danger" href="{% url 'cc-delete' object.id %}" data-toggle="modal" data-target="#DeleteModal">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="DeleteModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Delete Card?</h5>
-              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <form method="POST" action="{% url 'cc-delete' object.id %}">
-                {% csrf_token %}
-                <div class="modal-body">Are you sure you want to delete this credit card?</div>
-                <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-danger" type="submit" value="DELETE">Yes, Delete</button>
-                </div>
-            </form>
+<div class="row">
+  <div class="col-xl-4 col-md-6 mb-4 mt-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="font-weight-bold text-primary text-uppercase mb-1">Credit Limit</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ object.limit }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-user-lock fa-3x text-gray-300"></i>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6 mb-4 mt-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="font-weight-bold text-primary text-uppercase mb-1">Annual Fee</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ object.annualfee }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-dollar-sign fa-3x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6 mb-4 mt-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="font-weight-bold text-primary text-uppercase mb-1">Card Type</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {% if object.type == 1 %} Mastercard
+              {% elif object.type == 2 %} Visa
+              {% elif object.type == 3 %} American Express
+              {% else %} Other
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas far fa-credit-card fa-3x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-xl-4 col-md-6 mb-4 mt-4">
+    <div class="card border-left-secondary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="font-weight-bold text-primary text-uppercase mb-1">Activation Date</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ object.date_activated }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-calendar-check fa-3x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+  <div class="col-xl-4 col-md-6 mb-4 mt-4">
+    <div class="card border-left-secondary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="font-weight-bold text-primary text-uppercase mb-1">Cancellation Date</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {% if object.date_cancelled is None %} 
+                Currently Active 
+              {% else %} 
+                {{ object.date_cancelled }} 
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-calendar-times fa-3x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+  <div class="col-xl-4 col-md-6 mb-4 mt-4">
+    <div class="card border-left-secondary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="font-weight-bold text-primary text-uppercase mb-1">Reminder Date</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ object.date_reminder }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-calendar-plus fa-3x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card mb-4 b">
+      <div class="card-header bg-cardDetail">
+        <h6 class="m-0 font-weight-bold text-primary">Incentives</h6>
+      </div>
+      <div class="card-body">
+        {{ object.incentive }}
+      </div>
+    </div>  
+  </div>
+  <div class="col-lg-6">
+    <div class="card mb-4">
+      <div class="card-header bg-cardDetail">
+        <h6 class="m-0 font-weight-bold text-primary">Notes</h6>
+      </div>
+      <div class="card-body">
+        {{ object.notes }}
+      </div>
+    </div>  
+  </div>
+</div>
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="DeleteModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Card?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form method="POST" action="{% url 'cc-delete' object.id %}">
+          {% csrf_token %}
+          <div class="modal-body">Are you sure you want to delete this credit card?</div>
+          <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-danger" type="submit" value="DELETE">Yes, Delete</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="InfoModal" tabindex="-1" role="dialog" aria-labelledby="InfoModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update History</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>Date Created: {{ object.date_posted }}</div>
+        <div>Last Updated: {{ object.date_updated }}</div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
+
+<div class="card-body">
+  <p>
+    Credit Limit: {{ object.limit }}<br/>
+    Type: {{ object.TYPES.1 }}<br/>
+    Date Approved: {{ object.date_activated }}<br/>
+    Date Cancelled: {{ object.date_cancelled }}<br/>
+    Incentive: {{ object.incentive }}<br/>
+    <div>Notes: {{ object.notes }}</div>
+</p>
+</div>
