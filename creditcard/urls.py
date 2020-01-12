@@ -5,7 +5,8 @@ from .views import (
     CardDetailView, 
     CardCreateView,
     CardUpdateView,
-    CardDeleteView
+    CardDeleteView,
+    CardCancelView
     )
 
 urlpatterns = [
@@ -14,5 +15,6 @@ urlpatterns = [
     path('card/new/', CardCreateView.as_view(), name='cc-create'),
     path('card/<uuid:pk>/update/', CardUpdateView.as_view(), name='cc-update'),
     path('card/<uuid:pk>/delete/', CardDeleteView.as_view(), name='cc-delete'),
+    path('card/<uuid:pk>/cancel/', CardCancelView.as_view(), name='cc-cancel'),
     path('about/', views.about, name='cc-about'),
 ]

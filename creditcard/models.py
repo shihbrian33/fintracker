@@ -18,7 +18,7 @@ class CreditCard(models.Model):
         choices=TYPES,
         default=1,
     )
-    limit = models.IntegerField(validators=[MinValueValidator(1)])
+    limit = models.IntegerField(validators=[MinValueValidator(0)])
     date_posted = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
     date_activated = models.DateField()
@@ -28,7 +28,7 @@ class CreditCard(models.Model):
     active = models.BooleanField(default=True)
     incentive = models.TextField(blank=True)
     notes = models.TextField(blank=True)
-    annualfee = models.IntegerField(default=0)
+    annualfee = models.IntegerField(validators=[MinValueValidator(0)], default=0)
     
     def __str__(self):
         return self.name

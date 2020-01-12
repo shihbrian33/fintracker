@@ -116,6 +116,22 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-group ">
+                        <label class="control-label" for="id_date_reminder">
+                            Reminder Date
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                            </div>
+                            <input class="form-control dateinput" id="id_date_reminder" name="date_reminder" placeholder="MM/DD/YYYY" type="text" 
+                                value="{% if context.date_cancelled is not None %}{{ context.date_reminder|date:"m/d/yy" }}{% endif %}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group ">
                         <label class="control-label " for="id_incentive">
                         Incentive
                         </label>
@@ -148,9 +164,21 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
 <script>
+    var today = new Date();
+    var date = (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear();
     $.fn.datepicker.defaults.format = "mm/dd/yyyy";
-    $('#id_date_activated').datepicker();
-    $('#id_date_cancelled').datepicker();
+    $.fn.datepicker.defaults.todayHighlight = true;
+    $.fn.datepicker.defaults.todayBtnt = 'linked';
+    console.log('Current date ' + date);
+    $('#id_date_activated').datepicker({
+        endDate: date
+    });
+    $('#id_date_cancelled').datepicker({
+        endDate: date
+    });
+    $('#id_date_reminder').datepicker({
+        startDate: date
+    });
 </script>
 
 {% endblock script %}

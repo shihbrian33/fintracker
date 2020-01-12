@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.forms import widgets
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+import datetime
 
 name_map = {'annualfee': 'Annual Fee'}
 
@@ -34,7 +35,7 @@ class CardDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
 class CardCreateView(LoginRequiredMixin, CreateView):
     model = CreditCard
-    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes', 'annualfee']
+    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes', 'annualfee', 'date_reminder']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -44,7 +45,7 @@ class CardCreateView(LoginRequiredMixin, CreateView):
 
 class CardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = CreditCard
-    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes', 'annualfee']
+    fields = ['name', 'type', 'limit', 'date_activated', 'date_cancelled', 'active', 'incentive', 'notes', 'annualfee', 'date_reminder']
     context_object_name = 'context'
 
     def form_valid(self, form):
@@ -63,6 +64,20 @@ class CardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         context['name_mapping'] = name_map
         return context
 
+class CardCancelView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = CreditCard
+    fields = ['active']
+
+    def form_valid(self, form):
+        form.instance.date_cancelled = datetime.date.today()
+        form.instance.active = 0
+        return super().form_valid(form)
+
+    def test_func(self):
+        card = self.get_object()
+        if self.request.user == card.author:
+            return True
+        return False
 
 class CardDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CreditCard

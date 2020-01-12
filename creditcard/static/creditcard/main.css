@@ -34,3 +34,14 @@
 .bg-cardDetail {
   background-color: #c8cdd3 !important;
 }
+
+.bg-newcard {
+  background-color: #b2bac2 !important;
+}
+
+.card-body-icon.unrotate {
+  -webkit-transform: rotate(0);
+  transform: rotate(0);
+  top: 0rem;
+  right: 0rem;  
+}
