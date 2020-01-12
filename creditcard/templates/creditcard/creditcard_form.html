@@ -168,8 +168,7 @@
     var date = (today.getMonth()+1)+'/'+today.getDate()+'/'+today.getFullYear();
     $.fn.datepicker.defaults.format = "mm/dd/yyyy";
     $.fn.datepicker.defaults.todayHighlight = true;
-    $.fn.datepicker.defaults.todayBtnt = 'linked';
-    console.log('Current date ' + date);
+    $.fn.datepicker.defaults.todayBtn = 'linked';
     $('#id_date_activated').datepicker({
         endDate: date
     });

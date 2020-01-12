@@ -1,0 +1,5 @@
+{% autoescape off %}
+Hi {{ card.author.first_name }},
+This is a reminder letting you know that the reminder date ({{ card.date_reminder }}) that you set for your credit card "{{ card.name }}" is today.
+Please remember to mark the card as cancelled on localhost once it is cancelled.
+{% endautoescape %}
