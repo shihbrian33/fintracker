@@ -46,9 +46,10 @@ def register(request):
             })
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(subject, message, to=[to_email])
+            print('Email sent')
             email.send()
             #messages.success(request, f'Please confirm your email address to complete the registration')
-            return HttpResponse('Please confirm your email address to complete the registration')
+            return render(request, 'users/account_activation_confirm.html', {'form': form})
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
@@ -82,6 +83,8 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return render(request, 'users/account_activation_done.html')
     else:
-        return HttpResponse('Activation link is invalid!')
+        if user is not None:
+            user.delete()
+        return render(request, 'users/account_activation_error.html')
