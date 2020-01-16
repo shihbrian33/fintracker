@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+autopep8 = "*"
+pylint = "*"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+django-rest-knox = "*"
+django-extensions = "*"
+bootstrap4 = "*"
+django-model-utils = "*"
+pillow = "*"
+
+[requires]
+python_version = "3.6"
