@@ -1,13 +1,15 @@
 from django.urls import path
 from . import views
 from .views import (
-    CardListView, 
-    CardDetailView, 
+    CardListView,
+    CardDetailView,
     CardCreateView,
     CardUpdateView,
     CardDeleteView,
     CardCancelView
-    )
+)
+from .api import CardViewSet
+from rest_framework import routers
 
 urlpatterns = [
     path('', CardListView.as_view(), name='cc-home'),
@@ -18,3 +20,8 @@ urlpatterns = [
     path('card/<uuid:pk>/cancel/', CardCancelView.as_view(), name='cc-cancel'),
     path('about/', views.about, name='cc-about'),
 ]
+
+router = routers.DefaultRouter()
+router.register('api/cards', CardViewSet, 'cards')
+
+urlpatterns += router.urls
