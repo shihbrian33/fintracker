@@ -15,6 +15,7 @@ django-extensions = "*"
 bootstrap4 = "*"
 django-model-utils = "*"
 pillow = "*"
+pylint-django = "*"
 
 [requires]
 python_version = "3.6"

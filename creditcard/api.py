@@ -12,6 +12,6 @@ class CardViewSet(viewsets.ModelViewSet):
         return CreditCard.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(author=self.request.user)
 
     serializer_class = CardSerializer
