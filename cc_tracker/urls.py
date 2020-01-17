@@ -21,6 +21,7 @@ urlpatterns = [
         template_name='users/password_reset_complete.html'), name='password_reset_complete'),
     path('profile/', user_views.profile, name='profile'),
     path('activate/<uidb64>/<token>/', user_views.activate, name='activate'),
+    path('', include('users.urls'))
 ]
 
 if settings.DEBUG:

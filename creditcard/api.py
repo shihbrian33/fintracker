@@ -4,9 +4,12 @@ from .serializers import CardSerializer
 
 
 class CardViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
 
     def get_queryset(self):
-        return CreditCard.objects.all()
+        return CreditCard.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
