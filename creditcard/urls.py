@@ -14,11 +14,11 @@ from .views import (
 
 urlpatterns = [
     path('card', CardListView.as_view(), name='cc-home'),
-    path('card/<uuid:pk>/', CardDetailView.as_view(), name='cc-detail'),
+    path('card/<int:pk>/', CardDetailView.as_view(), name='cc-detail'),
     path('card/new/', CardCreateView.as_view(), name='cc-create'),
-    path('card/<uuid:pk>/update/', CardUpdateView.as_view(), name='cc-update'),
-    path('card/<uuid:pk>/delete/', CardDeleteView.as_view(), name='cc-delete'),
-    path('card/<uuid:pk>/cancel/', CardCancelView.as_view(), name='cc-cancel'),
+    path('card/<int:pk>/update/', CardUpdateView.as_view(), name='cc-update'),
+    path('card/<int:pk>/delete/', CardDeleteView.as_view(), name='cc-delete'),
+    path('card/<int:pk>/cancel/', CardCancelView.as_view(), name='cc-cancel'),
     path('about/', views.about, name='cc-about'),
 ]
 

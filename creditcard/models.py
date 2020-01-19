@@ -4,10 +4,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from model_utils import Choices
-import uuid
+
 
 class CreditCard(models.Model):
-    id = models.UUIDField(primary_key= True, default = uuid.uuid4, editable = False)
     name = models.CharField(max_length=50)
     TYPES = Choices(
         (1, 'Mastercard'),
@@ -28,10 +27,11 @@ class CreditCard(models.Model):
     active = models.BooleanField(default=True)
     incentive = models.TextField(blank=True)
     notes = models.TextField(blank=True)
-    annualfee = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-    
+    annualfee = models.IntegerField(
+        validators=[MinValueValidator(0)], default=0)
+
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('cc-detail', kwargs={'pk':self.pk})
+        return reverse('cc-detail', kwargs={'pk': self.pk})
