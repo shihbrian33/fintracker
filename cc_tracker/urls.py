@@ -7,7 +7,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('frontend.urls')),
     path('', include('creditcard.urls')),
+    path('', include('users.urls')),
     path('register/', user_views.register, name='register'),
     path('login/', user_views.login_user, name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
@@ -20,8 +22,7 @@ urlpatterns = [
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(
         template_name='users/password_reset_complete.html'), name='password_reset_complete'),
     path('profile/', user_views.profile, name='profile'),
-    path('activate/<uidb64>/<token>/', user_views.activate, name='activate'),
-    path('', include('users.urls'))
+    path('activate/<uidb64>/<token>/', user_views.activate, name='activate')
 ]
 
 if settings.DEBUG:

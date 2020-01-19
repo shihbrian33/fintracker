@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_extensions',
     'rest_framework',
-    'knox'
+    'knox',
+    'frontend'
 ]
 
 REST_FRAMEWORK = {
