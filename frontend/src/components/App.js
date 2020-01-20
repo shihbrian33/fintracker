@@ -5,7 +5,9 @@ import { Provider } from 'react-redux';
 import store from '../store';
 import Header from './layout/Header';
 import Sidebar from './layout/Sidebar';
-import CardSection from './cards/CardSection';
+import CardsList from './cards/CardsList';
+import CardDetails from './cards/Details/Details';
+import Profile from './Users/Profile';
 
 class App extends Component {
 
@@ -18,8 +20,11 @@ class App extends Component {
                         <div id="wrapper">
                             <Sidebar />
                             <div id="content-wrapper" className="mr-3 ml-3">
-                                <CardSection active={true} />
-                                <CardSection active={false} />
+                                <Switch>
+                                    <Route exact path='/cards' component={CardsList} />
+                                    <Route exact path='/profile' component={Profile} />
+                                    <Route path='/cards/:id' component={CardDetails} />
+                                </Switch>
                             </div>
                         </div>
                     </Fragment>

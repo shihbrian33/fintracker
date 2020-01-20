@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getCards, deleteCard } from '../../actions/cards';
+import { Link, Redirect } from 'react-router-dom'
 
 function IconClass(type) {
     switch (type) {
@@ -41,18 +42,18 @@ export class Cards extends Component {
                     }).map(card => (
                         <div className="col-xl-3 col-sm-6 my-3" key={card.id}>
                             <div className={"card text-white o-hidden vh-15 " + (this.props.active ? 'bg-active' : 'bg-inactive')}>
-                                <a className="card-body stretched-link text-decoration-none text-white" href="#">
+                                <Link to={`/cards/${card.id}`} className="card-body stretched-link text-decoration-none text-white">
                                     <div className="card-body-icon">
                                         <i className={IconClass(card.type)}> </i>
                                     </div>
                                     <div className="mr-5"><h5>{card.name}</h5></div>
-                                </a>
-                                <a className="card-footer stretched-link text-white clearfix small z-1" href="#">
-                                    <span className="float-left">View Details</span>
-                                    <span className="float-right">
+                                </Link>
+                                <Link to={`/cards/${card.id}`} className="card-footer stretched-link text-white clearfix small z-1" style={{ 'textDecoration': 'none' }}>
+                                    View Details
+                                <span className="float-right">
                                         <i className="fas fa-angle-right"></i>
                                     </span>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     ))}
@@ -69,7 +70,7 @@ export class Cards extends Component {
                         </div>
                     }
                 </div>
-            </div>
+            </div >
         )
     }
 }

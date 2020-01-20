@@ -1,7 +1,8 @@
-import { GET_CARDS, DELETE_CARD, ADD_CARD } from '../actions/types.js';
+import { GET_CARDS, DELETE_CARD, ADD_CARD, GET_CARD } from '../actions/types.js';
 
 const initialState = {
-    cards: []
+    cards: [],
+    card: new Object()
 }
 
 export default function (state = initialState, action) {
@@ -11,7 +12,13 @@ export default function (state = initialState, action) {
                 ...state,
                 cards: action.payload
             };
+        case GET_CARD:
+            return {
+                ...state,
+                card: action.payload
+            };
         case DELETE_CARD:
+            console.log('Delete Card');
             return {
                 ...state,
                 cards: state.cards.filter(card => card.id !== action.payload)

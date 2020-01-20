@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import Cards from './Cards'
+import Card from './Card'
 
 export class CardSection extends Component {
     render() {
@@ -15,7 +15,7 @@ export class CardSection extends Component {
                         </div>
                     </a>
                 </div>
-                <Cards active={this.props.active} />
+                <Card active={this.props.active} />
             </Fragment>
         )
     }
