@@ -1,4 +1,4 @@
-[data-toggle="collapse"] .fa:before {   
+[data-toggle="collapse"] .fa:before {
   content: "\f139";
 }
 
@@ -7,8 +7,7 @@
 }
 
 .text-gray-400 {
-  color: 
-  #d1d3e2 !important;
+  color: #d1d3e2 !important;
 }
 
 .text-gray-300 {
@@ -43,5 +42,13 @@
   -webkit-transform: rotate(0);
   transform: rotate(0);
   top: 0rem;
-  right: 0rem;  
+  right: 0rem;
+}
+
+.react-datepicker__input-container {
+  width: inherit;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
 }

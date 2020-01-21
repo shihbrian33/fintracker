@@ -34,7 +34,7 @@ export class DetailHeader extends Component {
                     </div>
                 </div>
                 <Confirm modalId='CancelModal' title='Cancel Card?' body='Are you sure you want mark this credit card as cancelled?' btnClass='btn-info' />
-                <Confirm modalId='DeleteModal' title='Delete Card?' body='Are you sure you want to delete this credit card?' btnClass='btn-danger' />
+                <Confirm modalId='DeleteModal' title='Delete Card?' body='Are you sure you want to delete this credit card?' btnClass='btn-danger' handler={this.props.deleteHandler} arg={this.props.card.id} />
                 <Info modalId='InfoModal' title='Card History' values={history} />
             </Fragment >
         )

@@ -18,7 +18,6 @@ export default function (state = initialState, action) {
                 card: action.payload
             };
         case DELETE_CARD:
-            console.log('Delete Card');
             return {
                 ...state,
                 cards: state.cards.filter(card => card.id !== action.payload)

@@ -8,6 +8,7 @@ import Sidebar from './layout/Sidebar';
 import CardsList from './cards/CardsList';
 import CardDetails from './cards/Details/Details';
 import Profile from './Users/Profile';
+import Form from './cards/Form';
 
 class App extends Component {
 
@@ -23,6 +24,7 @@ class App extends Component {
                                 <Switch>
                                     <Route exact path='/cards' component={CardsList} />
                                     <Route exact path='/profile' component={Profile} />
+                                    <Route exact path='/cards/new' component={Form} />
                                     <Route path='/cards/:id' component={CardDetails} />
                                 </Switch>
                             </div>

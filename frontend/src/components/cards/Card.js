@@ -60,7 +60,7 @@ export class Cards extends Component {
                     {this.props.active == true &&
                         <div className="col-xl-3 col-sm-6 my-3">
                             <div className="card text-white bg-newcard o-hidden vh-15">
-                                <a className="card-body stretched-link text-decoration-none text-white" href="#">
+                                <a className="card-body stretched-link text-decoration-none text-white" href="/#/cards/new">
                                     <div className="card-body-icon unrotate">
                                         <i className="fas fa-fw fa-plus"> </i>
                                     </div>

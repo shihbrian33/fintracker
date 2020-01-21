@@ -6,6 +6,7 @@ import DetailText from './DetailText';
 import PropTypes from 'prop-types';
 import { getCard, deleteCard } from '../../../actions/cards'
 import { Redirect } from "react-router-dom"
+import Spinner from 'react-bootstrap/Spinner';
 
 
 export class CardDetails extends Component {
@@ -27,7 +28,7 @@ export class CardDetails extends Component {
         this.props.getCard(params.id);
     }
 
-    handleClick = id => {
+    handleDelete = id => {
         const { deleteCard, history } = this.props;
         deleteCard(id, history);
         this.setState({ referrer: '/cards' })
@@ -54,7 +55,7 @@ export class CardDetails extends Component {
         if (this.props.card) {
             return (
                 <Fragment>
-                    <DetailHeader card={this.props.card} />
+                    <DetailHeader card={this.props.card} deleteHandler={this.handleDelete} />
                     <div className="row">
                         <Detail name='Credit Limit' value={`$${this.props.card.limit}`} icon='fas fa-user-lock' />
                         <Detail name='Annual Fee' value={`$${this.props.card.annualfee}`} icon='fas fa-dollar-sign' />
@@ -62,20 +63,20 @@ export class CardDetails extends Component {
                     </div>
                     <div className="row">
                         <Detail name='Activation Date' value={this.props.card.date_activated} icon='fas fa-calendar-check' />
-                        <Detail name='Annual Fee' value={date_cancelled} icon='fas fa-calendar-times' />
+                        <Detail name='Cancellation Date' value={date_cancelled} icon='fas fa-calendar-times' />
                         <Detail name='Reminder Date' value={this.props.card.date_reminder} icon='fas fa-calendar-plus' />
                     </div>
                     <div className="row">
                         <DetailText name='Incentive' text={this.props.card.incentive} />
                         <DetailText name='Notes' text={this.props.card.notes} />
                     </div>
-                    <button onClick={() => this.handleClick(this.props.card.id)}
-                        className="btn btn-danger btn-sm">Delete</button>
                 </Fragment>
             )
         } else {
             return (
-                <h1>Loading...</h1>
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
             )
         }
     }

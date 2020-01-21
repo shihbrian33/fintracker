@@ -12,16 +12,14 @@ export class confirm extends Component {
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <form method="POST" action="#">
-                            <div className="modal-body">{this.props.body}</div>
-                            <div className="modal-footer">
-                                <div className="form-group ">
-                                    <input className="form-control" id="id_name" name="active" type="hidden" value="0" />
-                                </div>
-                                <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                                <button className={"btn " + this.props.btnClass} type="submit">Yes</button>
+                        <div className="modal-body">{this.props.body}</div>
+                        <div className="modal-footer">
+                            <div className="form-group ">
+                                <input className="form-control" id="id_name" name="active" type="hidden" value="0" />
                             </div>
-                        </form>
+                            <button className="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            <button onClick={() => this.props.handler(this.props.arg)} className={"btn " + this.props.btnClass} type="submit" data-dismiss="modal">Yes</button>
+                        </div>
                     </div>
                 </div>
             </div>
