@@ -11,12 +11,12 @@ import "react-datepicker/dist/react-datepicker.css";
 export class Form extends Component {
   state = {
     name: "",
-    type: "",
+    type: "1",
     limit: "",
     date_activated: "",
-    date_cancelled: "",
-    date_reminder: "",
-    active: "",
+    date_cancelled: null,
+    date_reminder: null,
+    active: "1",
     incentive: "",
     notes: "",
     annualfee: ""
@@ -27,8 +27,6 @@ export class Form extends Component {
   };
 
   onDateChange = (name, date) => {
-    console.log(name);
-    console.log(date);
     this.setState({
       [name]: date.toISOString().substring(0, 10)
     });
@@ -61,20 +59,11 @@ export class Form extends Component {
       notes,
       annualfee
     };
+    if (card.date_cancelled) {
+      card.active = 0;
+    }
     console.log(card);
     this.props.addCard(card);
-    this.setState({
-      name: "",
-      type: "",
-      limit: "",
-      date_activated: "",
-      date_cancelled: "",
-      date_reminder: "",
-      active: "",
-      incentive: "",
-      notes: "",
-      annualfee: ""
-    });
   };
 
   render() {
@@ -100,7 +89,31 @@ export class Form extends Component {
                   onChange={this.onChange}
                   value={this.name}
                 />
-                <Option name="Card Type" id="type" options={types} />
+                <div className="col-6">
+                  <div className="form-group ">
+                    <label
+                      className="control-label requiredField"
+                      htmlFor="id_type"
+                    >
+                      <strong>Card Type</strong>
+                    </label>
+                    <select
+                      className="select form-control"
+                      id="id_type"
+                      name="type"
+                      onChange={this.onChange}
+                      value={this.type}
+                    >
+                      {Object.entries(types).map(([key, value]) => {
+                        return (
+                          <option value={key} key={key}>
+                            {value}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
               </div>
               <div className="row">
                 <Generic

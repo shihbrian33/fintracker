@@ -16,6 +16,8 @@ export class Option extends Component {
             className="select form-control"
             id={"id_" + this.props.name}
             name={this.props.name}
+            onChange={this.props.onChange}
+            value={this.props.value}
           >
             {Object.entries(this.props.options).map(([key, value]) => {
               return (

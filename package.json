@@ -32,6 +32,7 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.4.1",
     "core-js": "^3.6.4",
+    "history": "^4.10.1",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.0",
     "prop-types": "^15.6.2",

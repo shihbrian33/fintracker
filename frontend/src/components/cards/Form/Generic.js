@@ -19,7 +19,7 @@ export class Generic extends Component {
             placeholder=""
             type=" text"
             onChange={this.props.onChange}
-            valie={this.props.value}
+            value={this.props.value}
           />
         </div>
       </div>
