@@ -16,7 +16,7 @@ export class TextArea extends Component {
             id={"id_" + this.props.id}
             name={this.props.id}
             onChange={this.props.onChange}
-            value={this.props.text}
+            value={this.props.value}
           ></textarea>
         </div>
       </div>

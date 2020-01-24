@@ -42,9 +42,13 @@ export default function(state = initialState, action) {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT_SUCCESS:
+      console.log(state);
       return {
         ...state,
-        leads: []
+        cards: [],
+        card: null,
+        isAuthenticated: false,
+        isLoading: false
       };
     case REGISTER_FAIL:
       localStorage.removeItem("token");

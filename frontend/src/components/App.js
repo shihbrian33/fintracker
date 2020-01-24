@@ -12,6 +12,12 @@ import Form from "./cards/Form";
 import Login from "./Users/Login";
 import Register from "./Users/Register";
 import { loadUser } from "../actions/auth";
+import PrivateRoute from "./common/PrivateRoute";
+
+const alertOptions = {
+  timeout: 3000,
+  position: "top center"
+};
 
 class App extends Component {
   componentDidMount() {
@@ -28,12 +34,17 @@ class App extends Component {
               <Sidebar />
               <div id="content-wrapper" className="mr-3 ml-3">
                 <Switch>
-                  <Route exact path="/cards" component={CardsList} />
+                  <PrivateRoute exact path="/cards" component={CardsList} />
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/profile" component={Profile} />
-                  <Route exact path="/cards/new" component={Form} />
-                  <Route path="/cards/:id" component={CardDetails} />
+                  <PrivateRoute exact path="/cards/new" component={Form} />
+                  <Route
+                    exact
+                    path="/cards/:id/update"
+                    render={props => <Form {...props} update={true} />}
+                  />
+                  <PrivateRoute path="/cards/:id" component={CardDetails} />
                 </Switch>
               </div>
             </div>

@@ -1,34 +1,40 @@
 import axios from "axios";
 import { GET_CARDS, DELETE_CARD, ADD_CARD, GET_CARD } from "./types";
 import { tokenConfig } from "./auth";
+import { createMessage } from "./messages";
+import { returnErrors } from "./messages";
 
 export const getCards = () => (dispatch, getState) => {
   axios
-    .get("/api/cards/")
+    .get("/api/cards/", tokenConfig(getState))
     .then(res => {
       dispatch({
         type: GET_CARDS,
         payload: res.data
       });
     })
-    .catch(err => console.log(err));
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 export const getCard = id => (dispatch, getState) => {
   axios
-    .get(`/api/cards/${id}/`)
+    .get(`/api/cards/${id}/`, tokenConfig(getState))
     .then(res => {
       dispatch({
         type: GET_CARD,
         payload: res.data
       });
     })
-    .catch(err => console.log(err));
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 export const deleteCard = id => (dispatch, getState) => {
   axios
-    .delete(`/api/cards/${id}/`)
+    .delete(`/api/cards/${id}/`, tokenConfig(getState))
     .then(res => {
       //dispatch(createMessage({ deleteCard: 'Card Deleted' }));
       dispatch({
@@ -36,13 +42,19 @@ export const deleteCard = id => (dispatch, getState) => {
         payload: id
       });
     })
-    .catch(err => console.log(err));
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
 
 export const addCard = card => (dispatch, getState) => {
   card.author = getState().auth.user.id;
-  axios
-    .post("/api/cards/", card, tokenConfig(getState))
+  if (card.date_cancelled) {
+    card.active = 0;
+  }
+  const request = axios.post("/api/cards/", card, tokenConfig(getState));
+
+  request
     .then(res => {
       dispatch(createMessage({ addCard: "Card Added" }));
       dispatch({
@@ -50,5 +62,32 @@ export const addCard = card => (dispatch, getState) => {
         payload: res.data
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+
+  return request;
+};
+
+export const updateCard = (card, id) => (dispatch, getState) => {
+  card.author = getState().auth.user.id;
+  if (card.date_cancelled) {
+    card.active = 0;
+  }
+  const request = axios.patch(`/api/cards/${id}/`, card, tokenConfig(getState));
+
+  request
+    .then(res => {
+      dispatch(createMessage({ addCard: "Card Updated" }));
+      dispatch({
+        type: ADD_CARD,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      console.log("TESTING");
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+
+  return request;
 };

@@ -1,24 +1,31 @@
-import React, { Component, Fragment } from 'react'
-import Card from './Card'
+import React, { Component, Fragment } from "react";
+import Card from "./Card";
 
 export class CardSection extends Component {
-    render() {
-        return (
-            <Fragment>
-                <div className="card bg-secondary mb-1">
-                    <a className="card-block stretched-link text-decoration-none text-white" data-toggle="collapse" href={this.props.active ? '#ActiveCards' : '#CancelledCards'} aria-expanded="true">
-                        <div className="card-header">
-                            <strong>{this.props.active ? 'Active Cards' : 'Cancelled Cards'}</strong>
-                            <span className="float-right">
-                                <i className="fa" aria-hidden="true"></i>
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                <Card active={this.props.active} />
-            </Fragment>
-        )
-    }
+  render() {
+    return (
+      <Fragment>
+        <div className="card bg-secondary mb-1">
+          <a
+            className="card-block stretched-link text-decoration-none text-white"
+            data-toggle="collapse"
+            href={this.props.active ? "#ActiveCards" : "#CancelledCards"}
+            aria-expanded="true"
+          >
+            <div className="card-header">
+              <strong>
+                {this.props.active ? "Active Cards" : "Cancelled Cards"}
+              </strong>
+              <span className="float-right">
+                <i className="fa" aria-hidden="true"></i>
+              </span>
+            </div>
+          </a>
+        </div>
+        <Card active={this.props.active} cards={this.props.cards} />
+      </Fragment>
+    );
+  }
 }
 
-export default CardSection
+export default CardSection;
