@@ -11,6 +11,7 @@ import Profile from "./Users/Profile";
 import Form from "./cards/Form";
 import Login from "./Users/Login";
 import Register from "./Users/Register";
+import RegConfirm from "./Users/RegConfirm";
 import { loadUser } from "../actions/auth";
 import PrivateRoute from "./common/PrivateRoute";
 
@@ -38,6 +39,11 @@ class App extends Component {
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/profile" component={Profile} />
+                  <Route
+                    exact
+                    path="/registration-confirmation"
+                    component={RegConfirm}
+                  />
                   <PrivateRoute
                     exact
                     path="/cards/new"

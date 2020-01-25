@@ -1,9 +1,9 @@
 {% extends "users/base.html" %}
 {% block content %}
-    <div class="container">
-        <div class="card mx-auto mt-5">
-            <div class="card-body">
-            <div class="text-center mb-4">
+    <div className="container">
+        <div className="card mx-auto mt-5">
+            <div className="card-body">
+            <div className="text-center mb-4">
                 <h4>Thank You for Registering! </h4>
                 <h5>Please Check Your Email for Account Verification Link </h5>
                 <p>You will be automatically redirected to the login page</p>
@@ -12,5 +12,5 @@
         </div>
         </div>
     </div>
-    <meta http-equiv="refresh" content="4;url={% url 'login' %}">
+    <meta httpEquiv="refresh" content="4;url={% url 'login' %}">
 {% endblock content %}
