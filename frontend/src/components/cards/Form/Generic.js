@@ -13,7 +13,7 @@ export class Generic extends Component {
             {this.props.required && <span className="asteriskField">*</span>}
           </label>
           <input
-            className="form-control"
+            className={"form-control " + this.props.class}
             id={"id_" + this.props.id}
             name={this.props.id}
             placeholder=""

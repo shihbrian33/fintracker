@@ -9,6 +9,15 @@ import { Redirect } from "react-router-dom";
 import { getCard, addCard, updateCard } from "../../actions/cards";
 import Spinner from "react-bootstrap/Spinner";
 
+function validate(name, limit, fee, date) {
+  return {
+    email: name.length === 0,
+    limit: limit.length === 0,
+    fee: fee.length === 0,
+    date: date.length === 0
+  };
+}
+
 export class Form extends Component {
   state = {
     name: "",
@@ -36,7 +45,9 @@ export class Form extends Component {
       [name]: date.toISOString().substring(0, 10)
     });
   };
-
+  onNumChange = e => {
+    this.setState({ [e.target.name]: e.target.value.replace(/\D/, "") });
+  };
   componentWillReceiveProps(prevProps) {
     let card = Object.assign({}, this.props.card);
     card.loaded = 1;
@@ -99,7 +110,14 @@ export class Form extends Component {
       4: "Other"
     };
     if (this.state.success) return <Redirect to="/cards/" />;
-    if (this.props.update && this.state.loaded) {
+    if ((this.props.update && this.state.loaded) || !this.props.update) {
+      const errors = validate(
+        this.state.name,
+        this.state.limit,
+        this.state.annualfee,
+        this.state.date_activated
+      );
+      const isDisabled = Object.keys(errors).some(x => errors[x]);
       return (
         <Fragment>
           <div className="card-header bg-secondary">
@@ -147,14 +165,14 @@ export class Form extends Component {
                     name="Credit Limit"
                     id="limit"
                     required={true}
-                    onChange={this.onChange}
+                    onChange={this.onNumChange}
                     value={this.state.limit}
                   />
                   <Generic
                     name="Annual Fee"
                     id="annualfee"
                     required={true}
-                    onChange={this.onChange}
+                    onChange={this.onNumChange}
                     value={this.state.annualfee}
                   />
                 </div>
@@ -220,7 +238,11 @@ export class Form extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <button type="submit" className="btn btn-primary">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isDisabled}
+                  >
                     Submit
                   </button>
                 </div>
