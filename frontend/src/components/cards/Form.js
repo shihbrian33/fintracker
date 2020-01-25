@@ -231,9 +231,16 @@ export class Form extends Component {
       );
     } else {
       return (
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)"
+          }}
+        >
+          <Spinner animation="border" role="status" />
+        </div>
       );
     }
   }

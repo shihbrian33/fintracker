@@ -74,6 +74,8 @@ export class DetailHeader extends Component {
           title="Cancel Card?"
           body="Are you sure you want mark this credit card as cancelled?"
           btnClass="btn-info"
+          handler={this.props.cancelHandler}
+          arg={this.props.card.id}
         />
         <Confirm
           modalId="DeleteModal"

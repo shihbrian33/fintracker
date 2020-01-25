@@ -4,7 +4,7 @@ import DetailHeader from "./DetailHeader";
 import Detail from "./Detail";
 import DetailText from "./DetailText";
 import PropTypes from "prop-types";
-import { getCard, deleteCard } from "../../../actions/cards";
+import { getCard, deleteCard, updateCard } from "../../../actions/cards";
 import { Redirect } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -35,8 +35,25 @@ export class CardDetails extends Component {
   }
 
   handleDelete = id => {
-    const { deleteCard, history } = this.props;
-    deleteCard(id, history);
+    const { deleteCard } = this.props;
+    deleteCard(id);
+    this.setState({ referrer: "/cards" });
+  };
+
+  handleCancel = id => {
+    const { updateCard } = this.props;
+    var today = new Date();
+    var date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
+    var card = {
+      date_cancelled: date,
+      active: 0
+    };
+    updateCard(card, id);
     this.setState({ referrer: "/cards" });
   };
 
@@ -44,9 +61,6 @@ export class CardDetails extends Component {
     const { referrer } = this.state;
     if (referrer) return <Redirect to={referrer} />;
     let type = "";
-    let date_cancelled = this.props.card.date_cancelled
-      ? this.props.card.date_cancelled
-      : "Currently Active";
     switch (this.props.card.type) {
       case 1:
         type = "Mastercard";
@@ -66,6 +80,7 @@ export class CardDetails extends Component {
           <DetailHeader
             card={this.props.card}
             deleteHandler={this.handleDelete}
+            cancelHandler={this.handleCancel}
           />
           <div className="row">
             <Detail
@@ -90,16 +105,20 @@ export class CardDetails extends Component {
               value={this.props.card.date_activated}
               icon="fas fa-calendar-check"
             />
-            <Detail
-              name="Cancellation Date"
-              value={date_cancelled}
-              icon="fas fa-calendar-times"
-            />
-            <Detail
-              name="Reminder Date"
-              value={this.props.card.date_reminder}
-              icon="fas fa-calendar-plus"
-            />
+            {this.props.card.date_cancelled && (
+              <Detail
+                name="Cancellation Date"
+                value={this.props.card.date_cancelled}
+                icon="fas fa-calendar-times"
+              />
+            )}
+            {!this.props.card.date_cancelled && (
+              <Detail
+                name="Reminder Date"
+                value={this.props.card.date_reminder}
+                icon="fas fa-calendar-plus"
+              />
+            )}
           </div>
           <div className="row">
             <DetailText name="Incentive" text={this.props.card.incentive} />
@@ -109,23 +128,25 @@ export class CardDetails extends Component {
       );
     } else {
       return (
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)"
+          }}
+        >
+          <Spinner animation="border" role="status" />
+        </div>
       );
     }
   }
 }
 
-// const mapStateToProps = (state, ownProps) => {
-//     let id = ownProps.match.params.id;
-//     return {
-//         card: state.cards.cards.find(card => card.id == id)
-//     }
-// }
-
 const mapStateToProps = state => ({
   card: state.cards.card
 });
 
-export default connect(mapStateToProps, { getCard, deleteCard })(CardDetails);
+export default connect(mapStateToProps, { getCard, deleteCard, updateCard })(
+  CardDetails
+);
