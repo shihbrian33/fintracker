@@ -11,21 +11,15 @@ export class TransactionTable extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Salary</td>
-              <td className="td-right">$321</td>
-            </tr>
-            <tr>
-              <td>Recurring Bills</td>
-              <td className="td-right">$321</td>
-            </tr>
-            <tr>
-              <td>Expenses</td>
-              <td className="td-right">$321</td>
-            </tr>
+            {this.props.data.map(transaction => (
+              <tr key={transaction.id}>
+                <td>{transaction.cat_name}</td>
+                <td className="td-right">${transaction.amount}</td>
+              </tr>
+            ))}
             <tr>
               <td>Total</td>
-              <td className="td-right">$321</td>
+              <td className="td-right">${this.props.total}</td>
             </tr>
           </tbody>
         </table>

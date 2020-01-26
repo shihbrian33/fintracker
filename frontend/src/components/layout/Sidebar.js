@@ -14,15 +14,15 @@ export class Sidebar extends Component {
       return (
         <ul className="sidebar navbar-nav">
           <li className="nav-item active">
-            <Link to="/cards" className="nav-link">
-              <i className="fas fa-fw fa-credit-card mr-2"></i>
-              <span>Credit Card</span>
-            </Link>
-          </li>
-          <li className="nav-item active">
             <Link to="/transactions" className="nav-link">
               <i className="fas fa-wallet mr-2"></i>
               <span>Transactions</span>
+            </Link>
+          </li>
+          <li className="nav-item active">
+            <Link to="/cards" className="nav-link">
+              <i className="fas fa-fw fa-credit-card mr-2"></i>
+              <span>Credit Card</span>
             </Link>
           </li>
         </ul>

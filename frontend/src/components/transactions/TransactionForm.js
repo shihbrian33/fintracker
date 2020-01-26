@@ -3,17 +3,53 @@ import CategorySelect from "./CategorySelect";
 import DatePicker from "react-datepicker";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { addTransaction } from "../../actions/transaction";
 
 export class TransactionForm extends Component {
-  onSubmit = e => {
-    console.log("submit");
+  static propTypes = {
+    addTransaction: PropTypes.func.isRequired
   };
+
+  state = {
+    category: 1,
+    note: null,
+    amount: 0,
+    date: null
+  };
+
+  onDateChange = (name, date) => {
+    this.setState({
+      [name]: date.toISOString().substring(0, 10)
+    });
+  };
+
+  onNumChange = (name, amount) => {
+    this.setState({ [name]: amount.target.value.replace(/\D/, "") });
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    const { date, amount, category, note } = this.state;
+    const transaction = { date, amount, category, note };
+    this.props.addTransaction(transaction);
+  };
+
+  onChange = (name, e) => {
+    this.setState({ [name]: e.target.value });
+  };
+
   render() {
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">
           <div className="col-xl-6">
-            <CategorySelect />
+            <CategorySelect
+              onChange={this.onChange}
+              name="category"
+              value={this.props.category}
+            />
           </div>
           <div className="col-xl-6">
             <label>Amount</label>
@@ -23,7 +59,11 @@ export class TransactionForm extends Component {
                   <i className="fas fa-dollar-sign"></i>
                 </InputGroup.Text>
               </InputGroup.Prepend>
-              <FormControl aria-label="Amount (to the nearest dollar)" />
+              <FormControl
+                aria-label="Amount"
+                onChange={this.onNumChange.bind(this, "amount")}
+                value={this.state.amount}
+              />
             </InputGroup>
           </div>
         </div>
@@ -37,9 +77,10 @@ export class TransactionForm extends Component {
             </label>
             <DatePicker
               className="form-control"
-              value=""
+              value={this.state.date}
               todayButton="Today"
               required={true}
+              onChange={this.onDateChange.bind(this, "date")}
             />
           </div>
           <div className="col-xl-6">
@@ -50,7 +91,7 @@ export class TransactionForm extends Component {
                   <i className="fas fa-sticky-note"></i>
                 </InputGroup.Text>
               </InputGroup.Prepend>
-              <FormControl />
+              <FormControl onChange={this.onChange.bind(this, "note")} />
             </InputGroup>
           </div>
         </div>
@@ -59,6 +100,7 @@ export class TransactionForm extends Component {
             type="submit"
             className="btn btn-primary"
             style={{ float: "right" }}
+            onClick={this.props.close}
           >
             Submit
           </button>
@@ -68,4 +110,4 @@ export class TransactionForm extends Component {
   }
 }
 
-export default TransactionForm;
+export default connect(null, { addTransaction })(TransactionForm);

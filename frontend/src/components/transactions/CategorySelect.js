@@ -5,16 +5,20 @@ export class CategorySelect extends Component {
     return (
       <div className="form-group">
         <label>Category</label>
-        <select className="select form-control">
+        <select
+          className="select form-control"
+          onChange={this.props.onChange.bind(this, this.props.name)}
+          value={this.props.value}
+        >
           <optgroup label="Picnic">
-            <option>Mustard</option>
-            <option>Ketchup</option>
-            <option>Relish</option>
+            <option value="1">Salary</option>
+            <option value="2">Ketchup</option>
+            <option value="3">Relish</option>
           </optgroup>
           <optgroup label="Camping">
-            <option>Tent</option>
-            <option>Flashlight</option>
-            <option>Toilet Paper</option>
+            <option value="4">Tent</option>
+            <option value="5">Flashlight</option>
+            <option value="6">Toilet Paper</option>
           </optgroup>
         </select>
       </div>

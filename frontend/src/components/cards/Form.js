@@ -251,20 +251,8 @@ export class Form extends Component {
           </div>
         </Fragment>
       );
-    } else {
-      return (
-        <div
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)"
-          }}
-        >
-          <Spinner animation="border" role="status" />
-        </div>
-      );
     }
+    return null;
   }
 }
 
