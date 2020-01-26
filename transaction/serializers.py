@@ -5,7 +5,9 @@ from transaction.models import Transaction, Category
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = '__all__'
+        fields = ['amount', 'date_posted',
+                  'date_updated', 'date', 'notes', 'category']
+        depth = 1
 
 
 class CategorySerializer(serializers.ModelSerializer):

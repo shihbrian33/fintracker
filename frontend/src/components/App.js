@@ -14,6 +14,7 @@ import Register from "./Users/Register";
 import RegConfirm from "./Users/RegConfirm";
 import { loadUser } from "../actions/auth";
 import PrivateRoute from "./common/PrivateRoute";
+import TransactionMonth from "./transactions/TransactionMonth";
 
 const alertOptions = {
   timeout: 3000,
@@ -39,6 +40,11 @@ class App extends Component {
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/profile" component={Profile} />
+                  <Route
+                    exact
+                    path="/transactions"
+                    component={TransactionMonth}
+                  />
                   <Route
                     exact
                     path="/registration-confirmation"

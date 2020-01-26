@@ -56,3 +56,48 @@
 .error {
   border: 1px solid red;
 }
+
+.td-right {
+  text-align: right;
+}
+
+.neg-amount {
+  color: red;
+}
+
+.pos-amount {
+  color: #2db84c;
+}
+
+#transaction {
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 4px;
+  border-spacing: 0px;
+}
+
+#transaction td,
+#transaction th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#transaction tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#transaction tr:hover {
+  background-color: #ddd;
+}
+
+#transaction th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4e73df;
+  color: white;
+}
+
+#transaction tr:last-child {
+  background-color: #a4a4a5;
+}

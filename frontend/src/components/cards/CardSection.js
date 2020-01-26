@@ -5,7 +5,7 @@ export class CardSection extends Component {
   render() {
     return (
       <Fragment>
-        <div className="card bg-secondary mb-1">
+        <div className="card bg-secondary">
           <a
             className="card-block stretched-link text-decoration-none text-white"
             data-toggle="collapse"
@@ -22,7 +22,9 @@ export class CardSection extends Component {
             </div>
           </a>
         </div>
-        <Card active={this.props.active} cards={this.props.cards} />
+        <div className="card-body">
+          <Card active={this.props.active} cards={this.props.cards} />
+        </div>
       </Fragment>
     );
   }
