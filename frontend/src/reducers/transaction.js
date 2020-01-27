@@ -1,8 +1,15 @@
-import { GET_TRANSACTIONS, ADD_TRANSACTION } from "../actions/types.js";
+import {
+  GET_TRANSACTIONS,
+  ADD_TRANSACTION,
+  GET_CATEGORIES,
+  DELETE_TRANSACTION
+} from "../actions/types.js";
 
 const initialState = {
   transactions: [],
-  transaction: new Object()
+  transaction: new Object(),
+  categories: [],
+  category: new Object()
 };
 
 export default function(state = initialState, action) {
@@ -16,6 +23,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         transactions: action.payload
+      };
+    case GET_CATEGORIES:
+      return {
+        ...state,
+        categories: action.payload
+      };
+    case DELETE_TRANSACTION:
+      return {
+        ...state,
+        transactions: state.transactions.filter(
+          transaction => transaction.id !== action.payload
+        )
       };
     default:
       return state;

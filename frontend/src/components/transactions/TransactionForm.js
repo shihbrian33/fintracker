@@ -5,16 +5,17 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addTransaction } from "../../actions/transaction";
+import { addTransaction, getCategories } from "../../actions/transaction";
 
 export class TransactionForm extends Component {
   static propTypes = {
-    addTransaction: PropTypes.func.isRequired
+    addTransaction: PropTypes.func.isRequired,
+    getCategories: PropTypes.func.isRequired
   };
 
   state = {
     category: 1,
-    note: null,
+    notes: null,
     amount: 0,
     date: null
   };
@@ -31,14 +32,18 @@ export class TransactionForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { date, amount, category, note } = this.state;
-    const transaction = { date, amount, category, note };
+    const { date, amount, category, notes } = this.state;
+    const transaction = { date, amount, category, notes };
     this.props.addTransaction(transaction);
   };
 
   onChange = (name, e) => {
     this.setState({ [name]: e.target.value });
   };
+
+  componentDidMount() {
+    this.props.getCategories();
+  }
 
   render() {
     return (
@@ -49,6 +54,7 @@ export class TransactionForm extends Component {
               onChange={this.onChange}
               name="category"
               value={this.props.category}
+              categories={this.props.categories}
             />
           </div>
           <div className="col-xl-6">
@@ -91,7 +97,7 @@ export class TransactionForm extends Component {
                   <i className="fas fa-sticky-note"></i>
                 </InputGroup.Text>
               </InputGroup.Prepend>
-              <FormControl onChange={this.onChange.bind(this, "note")} />
+              <FormControl onChange={this.onChange.bind(this, "notes")} />
             </InputGroup>
           </div>
         </div>
@@ -110,4 +116,10 @@ export class TransactionForm extends Component {
   }
 }
 
-export default connect(null, { addTransaction })(TransactionForm);
+const mapStateToProps = state => ({
+  categories: state.transaction.categories
+});
+
+export default connect(mapStateToProps, { addTransaction, getCategories })(
+  TransactionForm
+);

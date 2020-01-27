@@ -46,6 +46,7 @@ function get_total(arr) {
 function arrfilter(type, data) {
   return data.filter(transaction => transaction.cat_type === type);
 }
+
 export class TransactionMonth extends Component {
   static propTypes = {
     transactions: PropTypes.array.isRequired,
@@ -53,9 +54,7 @@ export class TransactionMonth extends Component {
   };
 
   state = {
-    loaded: 0,
-    page: 0,
-    transactions: null
+    loaded: 0
   };
 
   componentDidMount() {
@@ -67,8 +66,6 @@ export class TransactionMonth extends Component {
   }
 
   render() {
-    console.log("render");
-    console.log(this.props.transactions);
     var income = arrfilter(1, this.props.transactions);
     var recurring = arrfilter(2, this.props.transactions);
     var expenses = arrfilter(3, this.props.transactions);

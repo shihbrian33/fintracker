@@ -1,24 +1,42 @@
 import React, { Component } from "react";
 
+function arrfilter(type, data) {
+  return data.filter(category => category.type === type);
+}
+
 export class CategorySelect extends Component {
   render() {
+    var income = arrfilter(1, this.props.categories);
+    var recurring = arrfilter(2, this.props.categories);
+    var expenses = arrfilter(3, this.props.categories);
     return (
       <div className="form-group">
         <label>Category</label>
         <select
           className="select form-control"
           onChange={this.props.onChange.bind(this, this.props.name)}
-          value={this.props.value}
         >
-          <optgroup label="Picnic">
-            <option value="1">Salary</option>
-            <option value="2">Ketchup</option>
-            <option value="3">Relish</option>
+          >
+          <optgroup label="Income">
+            {income.map(category => (
+              <option value={category.id} key={category.id}>
+                {category.name}
+              </option>
+            ))}
           </optgroup>
-          <optgroup label="Camping">
-            <option value="4">Tent</option>
-            <option value="5">Flashlight</option>
-            <option value="6">Toilet Paper</option>
+          <optgroup label="Recurring Bills">
+            {recurring.map(category => (
+              <option value={category.id} key={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </optgroup>
+          <optgroup label="Expenses">
+            {expenses.map(category => (
+              <option value={category.id} key={category.id}>
+                {category.name}
+              </option>
+            ))}
           </optgroup>
         </select>
       </div>

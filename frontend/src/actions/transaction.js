@@ -1,5 +1,10 @@
 import axios from "axios";
-import { ADD_TRANSACTION, GET_TRANSACTIONS } from "./types";
+import {
+  ADD_TRANSACTION,
+  GET_TRANSACTIONS,
+  GET_CATEGORIES,
+  DELETE_TRANSACTION
+} from "./types";
 import { tokenConfig } from "./auth";
 
 export const getTransactions = () => (dispatch, getState) => {
@@ -37,4 +42,32 @@ export const addTransaction = transaction => (dispatch, getState) => {
     });
 
   return request;
+};
+
+export const getCategories = () => (dispatch, getState) => {
+  axios
+    .get("/api/categories/", tokenConfig(getState))
+    .then(res => {
+      dispatch({
+        type: GET_CATEGORIES,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const deleteTransaction = id => (dispatch, getState) => {
+  axios
+    .delete(`/api/transactions/${id}/`, tokenConfig(getState))
+    .then(res => {
+      dispatch({
+        type: DELETE_TRANSACTION,
+        payload: id
+      });
+    })
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };
