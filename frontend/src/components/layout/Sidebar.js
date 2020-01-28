@@ -21,6 +21,14 @@ export class Sidebar extends Component {
               <i className="fas fa-wallet mr-2"></i>
               <span>Transactions</span>
             </Link>
+            <ul>
+              <li className="nav-item">
+                <a href="/#/categories" className="nav-link">
+                  <i className="fas fa-th mr-2"></i>
+                  <span>Categories</span>
+                </a>
+              </li>
+            </ul>
           </li>
           <li className="nav-item active">
             <Link to="/cards" className="nav-link">
@@ -31,7 +39,7 @@ export class Sidebar extends Component {
         </ul>
       );
     } else {
-      return <div></div>;
+      return null;
     }
   }
 }

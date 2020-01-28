@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { getTransactions } from "../../actions/transaction";
 import { Link } from "react-router-dom";
 
-function ShowModal(test) {
+function ShowModal(date) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -17,7 +17,6 @@ function ShowModal(test) {
   const handleSubmit = () => {
     setShow(false);
   };
-
   return (
     <>
       <Button variant="success" onClick={handleShow}>
@@ -29,7 +28,11 @@ function ShowModal(test) {
           <Modal.Title>Add Transaction</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <TransactionForm close={handleSubmit} />
+          <TransactionForm
+            close={handleSubmit}
+            month={date.month}
+            year={date.year}
+          />
         </Modal.Body>
       </Modal>
     </>
@@ -119,7 +122,6 @@ export class TransactionMonth extends Component {
       }
       const date = new Date(this.state.year, this.state.month - 1, 1);
       const cur_month = date.toLocaleDateString("default", { month: "long" });
-      console.log(cur_month);
       return (
         <Fragment>
           <h2 className="m-0 font-weight-bold text-center mb-3">
@@ -131,7 +133,7 @@ export class TransactionMonth extends Component {
               <i className="fas fa-angle-right ml-3" />
             </Link>
             <span style={{ float: "right" }}>
-              <ShowModal />
+              <ShowModal month={this.state.month - 1} year={this.state.year} />
             </span>
           </h2>
           <div className="row mx-2 my-1">

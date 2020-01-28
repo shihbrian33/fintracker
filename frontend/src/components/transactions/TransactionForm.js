@@ -16,8 +16,7 @@ export class TransactionForm extends Component {
   state = {
     category: 1,
     notes: null,
-    amount: 0,
-    date: null
+    amount: 0
   };
 
   onDateChange = (name, date) => {
@@ -32,7 +31,10 @@ export class TransactionForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { date, amount, category, notes } = this.state;
+    const { amount, category, notes } = this.state;
+    var date = new Date(this.props.year, this.props.month, 1)
+      .toISOString()
+      .slice(0, 10);
     const transaction = { date, amount, category, notes };
     this.props.addTransaction(transaction);
   };
@@ -74,21 +76,6 @@ export class TransactionForm extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-6">
-            <label
-              className="control-label requiredField"
-              htmlFor="id_transaction_date"
-            >
-              Date
-            </label>
-            <DatePicker
-              className="form-control"
-              value={this.state.date}
-              todayButton="Today"
-              required={true}
-              onChange={this.onDateChange.bind(this, "date")}
-            />
-          </div>
           <div className="col-xl-6">
             <label>Note</label>
             <InputGroup>

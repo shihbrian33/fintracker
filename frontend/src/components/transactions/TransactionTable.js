@@ -52,7 +52,14 @@ export class TransactionTable extends Component {
                 key={transaction.id}
                 onClick={this.handleClick.bind(this, transaction)}
               >
-                <td>{transaction.cat_name}</td>
+                <td>
+                  {transaction.cat_name}
+                  {transaction.notes && (
+                    <span style={{ float: "right" }}>
+                      <i className="far fa-sticky-note" />
+                    </span>
+                  )}
+                </td>
                 <td className="td-right">${transaction.amount}</td>
               </tr>
             ))}
