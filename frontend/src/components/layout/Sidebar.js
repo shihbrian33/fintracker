@@ -9,12 +9,15 @@ export class Sidebar extends Component {
   };
 
   render() {
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var year = date.getYear() + 1900;
     const { isAuthenticated, user } = this.props.auth;
     if (isAuthenticated) {
       return (
         <ul className="sidebar navbar-nav">
           <li className="nav-item active">
-            <Link to="/transactions" className="nav-link">
+            <Link to={`/transactions/${year}/${month}`} className="nav-link">
               <i className="fas fa-wallet mr-2"></i>
               <span>Transactions</span>
             </Link>

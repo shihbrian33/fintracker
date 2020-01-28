@@ -42,7 +42,7 @@ class App extends Component {
                   <Route exact path="/profile" component={Profile} />
                   <PrivateRoute
                     exact
-                    path="/transactions"
+                    path="/transactions/:year/:month"
                     component={TransactionMonth}
                   />
                   <Route

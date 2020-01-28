@@ -58,7 +58,9 @@ export class TransactionTable extends Component {
             ))}
             <tr>
               <td>Total</td>
-              <td className="td-right">${this.props.total}</td>
+              <td className="td-right">
+                <strong>${this.props.total}</strong>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -69,7 +71,9 @@ export class TransactionTable extends Component {
           centered
         >
           <Modal.Header closeButton>
-            <Modal.Title>{this.state.name}</Modal.Title>
+            <Modal.Title>
+              <strong>{this.state.name}</strong>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <h3>${this.state.amount}</h3>

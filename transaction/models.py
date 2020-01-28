@@ -28,7 +28,7 @@ class Transaction(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     date = models.DateField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    notes = models.TextField(blank=True)
+    notes = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):

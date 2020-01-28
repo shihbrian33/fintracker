@@ -9,13 +9,17 @@ class TransactionViewSet(viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        return Transaction.objects.filter(author=self.request.user)
+        if self.action == 'list':
+            month = self.request.query_params.get('month')
+            year = self.request.query_params.get('year')
+            return Transaction.objects.filter(author=self.request.user, date__year=year, date__month=month)
+        else:
+            return Transaction.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
     def get_serializer_class(self):
-        print(self.action)
         if self.action == 'list':
             return TransactionGetSerializer
         if self.action == 'create':

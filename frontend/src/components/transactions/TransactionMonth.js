@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getTransactions } from "../../actions/transaction";
+import { Link } from "react-router-dom";
 
 function ShowModal(test) {
   const [show, setShow] = useState(false);
@@ -48,21 +49,45 @@ function arrfilter(type, data) {
 }
 
 export class TransactionMonth extends Component {
+  constructor(props) {
+    super(props);
+    var date = new Date();
+    this.state = {
+      loaded: 0,
+      month: date.getMonth() + 1,
+      year: date.getYear() + 1900
+    };
+  }
+
   static propTypes = {
     transactions: PropTypes.array.isRequired,
     getTransactions: PropTypes.func.isRequired
   };
 
-  state = {
-    loaded: 0
-  };
-
   componentDidMount() {
-    this.props.getTransactions();
+    const {
+      match: { params }
+    } = this.props;
+    console.log("did mount");
+    this.props.getTransactions(params.month, params.year);
+    this.setState({ month: params.month, year: params.year });
   }
 
   componentWillReceiveProps() {
     this.setState({ loaded: 1 });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.month !== this.props.match.params.month) {
+      this.props.getTransactions(
+        this.props.match.params.month,
+        this.props.match.params.year
+      );
+      this.setState({
+        month: this.props.match.params.month,
+        year: this.props.match.params.year
+      });
+    }
   }
 
   render() {
@@ -81,16 +106,30 @@ export class TransactionMonth extends Component {
 
     var totclass = total > 0 ? "pos-amount" : "neg-amount";
     if (this.state.loaded) {
+      let prevMonth = parseInt(this.state.month, 10) - 1;
+      let prevYear = parseInt(this.state.year, 10);
+      let nextMonth = parseInt(this.state.month, 10) + 1;
+      let nextYear = parseInt(this.state.year, 10);
+      if (this.state.month == 12) {
+        nextMonth = 1;
+        nextYear = parseInt(this.state.year, 10) + 1;
+      } else if (this.state.month == 1) {
+        prevMonth = 12;
+        prevYear = parseInt(this.state.year, 10) - 1;
+      }
+      const date = new Date(this.state.year, this.state.month - 1, 1);
+      const cur_month = date.toLocaleDateString("default", { month: "long" });
+      console.log(cur_month);
       return (
         <Fragment>
           <h2 className="m-0 font-weight-bold text-center mb-3">
-            <a href="#" className="text-decoration-none mr-3">
-              <i className="fas fa-angle-left" />
-            </a>
-            January 2020
-            <a href="#" className="text-decoration-none ml-3">
-              <i className="fas fa-angle-right" />
-            </a>
+            <Link to={`/transactions/${prevYear}/${prevMonth}`}>
+              <i className="fas fa-angle-left mr-3" />
+            </Link>
+            {cur_month + " " + this.state.year}
+            <Link to={`/transactions/${nextYear}/${nextMonth}`}>
+              <i className="fas fa-angle-right ml-3" />
+            </Link>
             <span style={{ float: "right" }}>
               <ShowModal />
             </span>
@@ -129,7 +168,9 @@ export class TransactionMonth extends Component {
                   </tr>
                   <tr>
                     <td>Total</td>
-                    <td className={"td-right " + totclass}>${total}</td>
+                    <td className={"td-right " + totclass}>
+                      <strong>${total}</strong>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -155,8 +196,10 @@ export class TransactionMonth extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  transactions: state.transaction.transactions
-});
+const mapStateToProps = state => {
+  return {
+    transactions: state.transaction.transactions
+  };
+};
 
 export default connect(mapStateToProps, { getTransactions })(TransactionMonth);

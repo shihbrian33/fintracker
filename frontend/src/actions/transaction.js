@@ -7,9 +7,12 @@ import {
 } from "./types";
 import { tokenConfig } from "./auth";
 
-export const getTransactions = () => (dispatch, getState) => {
-  axios
-    .get("/api/transactions/", tokenConfig(getState))
+export const getTransactions = (month, year) => (dispatch, getState) => {
+  var config = tokenConfig(getState);
+  config.params["month"] = month;
+  config.params["year"] = year;
+  var req = axios
+    .get("/api/transactions/", config)
     .then(res => {
       dispatch({
         type: GET_TRANSACTIONS,
@@ -23,7 +26,6 @@ export const getTransactions = () => (dispatch, getState) => {
 
 export const addTransaction = transaction => (dispatch, getState) => {
   transaction.author = getState().auth.user.id;
-  console.log(transaction);
   const request = axios.post(
     "/api/transactions/",
     transaction,
