@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import CategorySelect from "./CategorySelect";
-import DatePicker from "react-datepicker";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { connect } from "react-redux";

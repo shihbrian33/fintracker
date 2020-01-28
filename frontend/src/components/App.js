@@ -15,6 +15,7 @@ import RegConfirm from "./Users/RegConfirm";
 import { loadUser } from "../actions/auth";
 import PrivateRoute from "./common/PrivateRoute";
 import TransactionMonth from "./transactions/TransactionMonth";
+import Category from "./category/Category";
 
 const alertOptions = {
   timeout: 3000,
@@ -36,20 +37,15 @@ class App extends Component {
               <Sidebar />
               <div id="content-wrapper" className="mr-3 ml-3">
                 <Switch>
-                  <PrivateRoute exact path="/cards" component={CardsList} />
                   <Route exact path="/register" component={Register} />
                   <Route exact path="/login" component={Login} />
                   <Route exact path="/profile" component={Profile} />
-                  <PrivateRoute
-                    exact
-                    path="/transactions/:year/:month"
-                    component={TransactionMonth}
-                  />
                   <Route
                     exact
                     path="/registration-confirmation"
                     component={RegConfirm}
                   />
+                  <PrivateRoute exact path="/cards" component={CardsList} />
                   <PrivateRoute
                     exact
                     path="/cards/new"
@@ -62,6 +58,12 @@ class App extends Component {
                     render={props => <Form {...props} update={true} />}
                   />
                   <PrivateRoute path="/cards/:id" component={CardDetails} />
+                  <PrivateRoute
+                    exact
+                    path="/transactions/:year/:month"
+                    component={TransactionMonth}
+                  />
+                  <PrivateRoute exact path="/categories" component={Category} />
                 </Switch>
               </div>
             </div>

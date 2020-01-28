@@ -101,3 +101,49 @@
 #transaction tr:last-child {
   background-color: #cfcfd3;
 }
+
+.categories-list {
+  display: flex;
+  max-width: 100%;
+  margin: 40px auto 0 auto;
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 4px;
+  border-spacing: 0px;
+  justify-content: space-around;
+}
+
+.category {
+  padding: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  width: 25%;
+}
+
+#categories th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4e73df;
+  color: white;
+}
+
+#categories tr,
+#categories th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  font-size: large;
+}
+
+#categories tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#categories tr:hover {
+  background-color: #ddd;
+}
+
+#categoryHeader {
+  text-align: center;
+}
