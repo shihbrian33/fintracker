@@ -37,13 +37,26 @@ export class TransactionTable extends Component {
     this.props.deleteTransaction(id);
   }
 
+  handleCopy = type => {
+    console.log("Copy " + type);
+  };
   render() {
     return (
       <div className="col-xl-6">
         <table className="table" id="transaction">
           <thead>
             <tr>
-              <th colSpan="2">{this.props.tablename}</th>
+              <th colSpan="2">
+                {this.props.tablename}
+                {this.props.prev && (
+                  <a
+                    className="button"
+                    onClick={this.handleCopy.bind(this, this.props.tablename)}
+                  >
+                    <i className="far fa-copy float-right" />
+                  </a>
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>

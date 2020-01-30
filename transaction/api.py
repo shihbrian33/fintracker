@@ -1,6 +1,7 @@
 from transaction.models import Transaction, Category
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from .serializers import TransactionGetSerializer, TransactionPostSerializer, CategorySerializer
+from rest_framework.response import Response
 
 
 class TransactionViewSet(viewsets.ModelViewSet):
@@ -12,9 +13,25 @@ class TransactionViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             month = self.request.query_params.get('month')
             year = self.request.query_params.get('year')
-            return Transaction.objects.filter(author=self.request.user, date__year=year, date__month=month)
+            cattype = self.request.query_params.get('type')
+            filter_kwargs = {'author': self.request.user}
+            if month:
+                filter_kwargs['date__month'] = month
+            if year:
+                filter_kwargs['date__year'] = year
+            if cattype:
+                filter_kwargs['category__type'] = cattype
+            return Transaction.objects.filter(**filter_kwargs)
         else:
             return Transaction.objects.filter(author=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(
+            data=request.data, many=isinstance(request.data, list))
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

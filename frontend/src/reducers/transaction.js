@@ -6,6 +6,7 @@ import {
   ADD_CATEGORY,
   DELETE_CATEGORY
 } from "../actions/types.js";
+import { array } from "prop-types";
 
 const initialState = {
   transactions: [],
@@ -17,9 +18,16 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case ADD_TRANSACTION:
+      if (Array.isArray(action.payload)) {
+        for (var i = 0; i < action.payload.length; i++) {
+          state.transactions.push(action.payload[i]);
+        }
+      } else {
+        state.transactions.push(action.payload);
+      }
       return {
         ...state,
-        transactions: [...state.transactions, action.payload]
+        transactions: [...state.transactions]
       };
     case GET_TRANSACTIONS:
       return {

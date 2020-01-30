@@ -9,10 +9,11 @@ import {
 } from "./types";
 import { tokenConfig } from "./auth";
 
-export const getTransactions = (month, year) => (dispatch, getState) => {
+export const getTransactions = args => (dispatch, getState) => {
   var config = tokenConfig(getState);
-  config.params["month"] = month;
-  config.params["year"] = year;
+  for (var name in args) {
+    config.params[name] = args[name];
+  }
   var req = axios
     .get("/api/transactions/", config)
     .then(res => {
