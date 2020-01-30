@@ -147,3 +147,11 @@
 #categoryHeader {
   text-align: center;
 }
+
+table#category tr td a.button {
+  display: none;
+}
+
+table#category tr:hover td a.button {
+  display: inline-block;
+}

@@ -17,6 +17,7 @@ function ShowModal(date) {
   const handleSubmit = () => {
     setShow(false);
   };
+
   return (
     <>
       <Button variant="success" onClick={handleShow}>
@@ -71,7 +72,6 @@ export class TransactionMonth extends Component {
     const {
       match: { params }
     } = this.props;
-    console.log("did mount");
     this.props.getTransactions(params.month, params.year);
     this.setState({ month: params.month, year: params.year });
   }

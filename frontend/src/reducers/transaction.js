@@ -1,8 +1,10 @@
 import {
-  GET_TRANSACTIONS,
   ADD_TRANSACTION,
+  GET_TRANSACTIONS,
+  DELETE_TRANSACTION,
   GET_CATEGORIES,
-  DELETE_TRANSACTION
+  ADD_CATEGORY,
+  DELETE_CATEGORY
 } from "../actions/types.js";
 
 const initialState = {
@@ -24,16 +26,28 @@ export default function(state = initialState, action) {
         ...state,
         transactions: action.payload
       };
-    case GET_CATEGORIES:
-      return {
-        ...state,
-        categories: action.payload
-      };
     case DELETE_TRANSACTION:
       return {
         ...state,
         transactions: state.transactions.filter(
           transaction => transaction.id !== action.payload
+        )
+      };
+    case GET_CATEGORIES:
+      return {
+        ...state,
+        categories: action.payload
+      };
+    case ADD_CATEGORY:
+      return {
+        ...state,
+        categories: [...state.categories, action.payload]
+      };
+    case DELETE_CATEGORY:
+      return {
+        ...state,
+        categories: state.categories.filter(
+          category => category.id !== action.payload
         )
       };
     default:

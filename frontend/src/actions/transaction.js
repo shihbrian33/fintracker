@@ -2,8 +2,10 @@ import axios from "axios";
 import {
   ADD_TRANSACTION,
   GET_TRANSACTIONS,
+  DELETE_TRANSACTION,
   GET_CATEGORIES,
-  DELETE_TRANSACTION
+  ADD_CATEGORY,
+  DELETE_CATEGORY
 } from "./types";
 import { tokenConfig } from "./auth";
 
@@ -46,6 +48,20 @@ export const addTransaction = transaction => (dispatch, getState) => {
   return request;
 };
 
+export const deleteTransaction = id => (dispatch, getState) => {
+  axios
+    .delete(`/api/transactions/${id}/`, tokenConfig(getState))
+    .then(res => {
+      dispatch({
+        type: DELETE_TRANSACTION,
+        payload: id
+      });
+    })
+    .catch(err =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
+};
+
 export const getCategories = () => (dispatch, getState) => {
   axios
     .get("/api/categories/", tokenConfig(getState))
@@ -60,12 +76,34 @@ export const getCategories = () => (dispatch, getState) => {
     });
 };
 
-export const deleteTransaction = id => (dispatch, getState) => {
-  axios
-    .delete(`/api/transactions/${id}/`, tokenConfig(getState))
+export const addCategory = category => (dispatch, getState) => {
+  category.author = getState().auth.user.id;
+  const request = axios.post(
+    "/api/categories/",
+    category,
+    tokenConfig(getState)
+  );
+
+  request
     .then(res => {
       dispatch({
-        type: DELETE_TRANSACTION,
+        type: ADD_CATEGORY,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+  return request;
+};
+
+export const deleteCategory = id => (dispatch, getState) => {
+  axios
+    .delete(`/api/categories/${id}/`, tokenConfig(getState))
+    .then(res => {
+      dispatch({
+        type: DELETE_CATEGORY,
         payload: id
       });
     })
