@@ -39,7 +39,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list':
             return TransactionGetSerializer
-        if self.action == 'create':
+        else:
             return TransactionPostSerializer
 
 

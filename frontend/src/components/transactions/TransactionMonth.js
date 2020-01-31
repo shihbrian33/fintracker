@@ -132,11 +132,17 @@ export class TransactionMonth extends Component {
         <Fragment>
           <h2 className="m-0 font-weight-bold text-center mb-3">
             <Link to={`/transactions/${prevYear}/${prevMonth}`}>
-              <i className="fas fa-angle-left mr-3" />
+              <span>
+                <i className="fas fa-angle-left mr-3" />
+              </span>
             </Link>
-            {cur_month + " " + this.state.year}
+            <span className="noselect">
+              {cur_month + " " + this.state.year}
+            </span>
             <Link to={`/transactions/${nextYear}/${nextMonth}`}>
-              <i className="fas fa-angle-right ml-3" />
+              <span>
+                <i className="fas fa-angle-right ml-3" />
+              </span>
             </Link>
             <span style={{ float: "right" }}>
               <ShowModal month={this.state.month - 1} year={this.state.year} />

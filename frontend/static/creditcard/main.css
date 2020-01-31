@@ -80,6 +80,7 @@
 #transaction th {
   border: 1px solid #ddd;
   padding: 8px;
+  width: 50%;
 }
 
 #transaction tr:nth-child(even) {
@@ -158,4 +159,18 @@ table#category tr:hover td a.button {
 
 .float-right {
   float: right;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+#modalTable th {
+  border-top: none;
 }

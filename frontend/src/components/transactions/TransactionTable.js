@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import {
@@ -9,6 +9,17 @@ import {
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
+function ModalRow({ row }) {
+  console.log(row);
+  return (
+    <tr>
+      <td>{row.date}</td>
+      <td>${row.amount}</td>
+      <td>{row.notes}</td>
+    </tr>
+  );
+}
+
 export class TransactionTable extends Component {
   static propTypes = {
     deleteTransaction: PropTypes.func.isRequired,
@@ -18,18 +29,13 @@ export class TransactionTable extends Component {
   state = {
     show: false,
     name: "",
-    amount: "",
-    note: "",
-    date: null
+    data: null
   };
-  handleClick = transaction => {
+  handleClick = (categoryName, data) => {
     this.setState({
       show: true,
-      name: transaction.cat_name,
-      amount: transaction.amount,
-      note: transaction.notes,
-      date: transaction.date,
-      id: transaction.id
+      name: categoryName,
+      data: data
     });
   };
 
@@ -69,6 +75,12 @@ export class TransactionTable extends Component {
     });
   };
   render() {
+    var totals = {};
+    for (var i in this.props.data) {
+      let amount = this.props.data[i].amount;
+      let name = this.props.data[i].cat_name;
+      totals[name] = totals[name] ? totals[name] + amount : amount;
+    }
     return (
       <div className="col-xl-6">
         <table className="table" id="transaction">
@@ -88,20 +100,22 @@ export class TransactionTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.data.map(transaction => (
+            {Object.keys(totals).map((name, index) => (
               <tr
-                key={transaction.id}
-                onClick={this.handleClick.bind(this, transaction)}
+                key={index}
+                onClick={this.handleClick.bind(this, name, this.props.data)}
               >
                 <td>
-                  {transaction.cat_name}
+                  {name}
+                  {/*
                   {transaction.notes && (
                     <span style={{ float: "right" }}>
                       <i className="far fa-sticky-note" />
                     </span>
                   )}
+                  */}
                 </td>
-                <td className="td-right">${transaction.amount}</td>
+                <td className="td-right">${totals[name]}</td>
               </tr>
             ))}
             <tr>
@@ -124,9 +138,22 @@ export class TransactionTable extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h3>${this.state.amount}</h3>
-            <div>Note: {this.state.note}</div>
-            <small className="text-muted">{this.state.date}</small>
+            <table className="table" id="modalTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.props.data
+                  .filter(t => t.cat_name == this.state.name)
+                  .map((transaction, index) => (
+                    <ModalRow row={transaction} key={index} />
+                  ))}
+              </tbody>
+            </table>
           </Modal.Body>
           <Modal.Footer>
             <Button

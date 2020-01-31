@@ -89,7 +89,7 @@ export class Category extends Component {
                         style={{ float: "right" }}
                         onClick={this.handleDelete.bind(this, category.id)}
                       >
-                        <i className="fas fa-minus-circle"></i>
+                        <i className="far fa-trash-alt"></i>
                       </a>
                     </td>
                   </tr>
@@ -113,7 +113,7 @@ export class Category extends Component {
                         style={{ float: "right" }}
                         onClick={this.handleDelete.bind(this, category.id)}
                       >
-                        <i className="fas fa-minus-circle"></i>
+                        <i className="far fa-trash-alt"></i>
                       </a>
                     </td>
                   </tr>
@@ -137,7 +137,7 @@ export class Category extends Component {
                         style={{ float: "right" }}
                         onClick={this.handleDelete.bind(this, category.id)}
                       >
-                        <i className="fas fa-minus-circle"></i>
+                        <i className="far fa-trash-alt"></i>
                       </a>
                     </td>
                   </tr>
