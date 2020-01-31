@@ -86,10 +86,12 @@ export class TransactionMonth extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.month !== this.props.match.params.month) {
-      this.props.getTransactions(
-        this.props.match.params.month,
-        this.props.match.params.year
-      );
+      var args = {
+        month: this.props.match.params.month,
+        year: this.props.match.params.year
+      };
+
+      this.props.getTransactions(args);
       this.setState({
         month: this.props.match.params.month,
         year: this.props.match.params.year
@@ -146,6 +148,10 @@ export class TransactionMonth extends Component {
               data={income}
               total={totals["Income"]}
               prev={true}
+              copyYear={prevYear}
+              copyMonth={prevMonth}
+              currYear={this.state.year}
+              currMonth={this.state.month}
             />
             <div className="col-xl-6">
               <table className="table" id="transaction">
@@ -189,6 +195,10 @@ export class TransactionMonth extends Component {
               data={recurring}
               total={totals["Recurring Bills"] * -1}
               prev={true}
+              copyYear={prevYear}
+              copyMonth={prevMonth}
+              currYear={this.state.year}
+              currMonth={this.state.month}
             />
           </div>
           <div className="row mx-2 my-1">

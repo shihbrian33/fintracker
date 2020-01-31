@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   ADD_TRANSACTION,
   GET_TRANSACTIONS,
+  GET_PREV_TRANSACTIONS,
   DELETE_TRANSACTION,
   GET_CATEGORIES,
   ADD_CATEGORY,
@@ -14,8 +15,9 @@ export const getTransactions = args => (dispatch, getState) => {
   for (var name in args) {
     config.params[name] = args[name];
   }
-  var req = axios
-    .get("/api/transactions/", config)
+  var req = axios.get("/api/transactions/", config);
+
+  req
     .then(res => {
       dispatch({
         type: GET_TRANSACTIONS,
@@ -25,6 +27,27 @@ export const getTransactions = args => (dispatch, getState) => {
     .catch(err => {
       console.log(err);
     });
+
+  return req;
+};
+
+export const getPrevTransactions = args => (dispatch, getState) => {
+  var config = tokenConfig(getState);
+  for (var name in args) {
+    config.params[name] = args[name];
+  }
+  var req = axios.get("/api/transactions/", config);
+  req
+    .then(res => {
+      dispatch({
+        type: GET_PREV_TRANSACTIONS
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+  return req;
 };
 
 export const addTransaction = transaction => (dispatch, getState) => {

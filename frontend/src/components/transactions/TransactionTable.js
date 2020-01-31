@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { deleteTransaction } from "../../actions/transaction";
+import {
+  deleteTransaction,
+  getPrevTransactions,
+  addTransaction
+} from "../../actions/transaction";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 export class TransactionTable extends Component {
   static propTypes = {
-    deleteTransaction: PropTypes.func.isRequired
+    deleteTransaction: PropTypes.func.isRequired,
+    getPrevTransactions: PropTypes.func.isRequired
   };
 
   state = {
@@ -38,7 +43,30 @@ export class TransactionTable extends Component {
   }
 
   handleCopy = type => {
-    console.log("Copy " + type);
+    var types = {
+      Income: 1,
+      "Recurring Bills": 2,
+      Expenses: 3
+    };
+    var args = {
+      month: this.props.copyMonth,
+      year: this.props.copyYear,
+      type: types[type]
+    };
+    this.props.getPrevTransactions(args).then(res => {
+      var results = [];
+      for (var i in res.data) {
+        let trans = res.data[i];
+        let copy = {
+          amount: trans.amount,
+          notes: trans.notes,
+          category: trans.category,
+          date: this.props.currYear + "-" + this.props.currMonth + "-01"
+        };
+        results.push(copy);
+      }
+      this.props.addTransaction(results);
+    });
   };
   render() {
     return (
@@ -113,4 +141,9 @@ export class TransactionTable extends Component {
     );
   }
 }
-export default connect(null, { deleteTransaction })(TransactionTable);
+
+export default connect(null, {
+  deleteTransaction,
+  getPrevTransactions,
+  addTransaction
+})(TransactionTable);

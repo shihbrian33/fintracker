@@ -4,7 +4,8 @@ import {
   DELETE_TRANSACTION,
   GET_CATEGORIES,
   ADD_CATEGORY,
-  DELETE_CATEGORY
+  DELETE_CATEGORY,
+  GET_PREV_TRANSACTIONS
 } from "../actions/types.js";
 import { array } from "prop-types";
 
@@ -33,6 +34,10 @@ export default function(state = initialState, action) {
       return {
         ...state,
         transactions: action.payload
+      };
+    case GET_PREV_TRANSACTIONS:
+      return {
+        ...state
       };
     case DELETE_TRANSACTION:
       return {
