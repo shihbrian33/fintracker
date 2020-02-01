@@ -28,6 +28,12 @@ export class Sidebar extends Component {
                   <span>Categories</span>
                 </a>
               </li>
+              <li className="nav-item">
+                <a href="/#/import" className="nav-link">
+                  <i className="fas fa-upload mr-2"></i>
+                  <span>Import</span>
+                </a>
+              </li>
             </ul>
           </li>
           <li className="nav-item active">

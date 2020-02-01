@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { addTransaction, getCategories } from "../../actions/transaction";
 import DatePicker from "react-datepicker";
+import Accordion from "react-bootstrap/Accordion";
+import Button from "react-bootstrap/Button";
 
 export class TransactionForm extends Component {
   constructor(props) {
@@ -17,7 +19,9 @@ export class TransactionForm extends Component {
       category: 1,
       notes: null,
       amount: 0,
-      date: date
+      date: date,
+      merchant: null,
+      card: null
     };
   }
 
@@ -39,8 +43,8 @@ export class TransactionForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { date, amount, category, notes } = this.state;
-    const transaction = { date, amount, category, notes };
+    const { date, amount, category, notes, merchant, card } = this.state;
+    const transaction = { date, amount, category, notes, merchant, card };
     this.props.addTransaction(transaction);
   };
 
@@ -104,22 +108,63 @@ export class TransactionForm extends Component {
               onChange={this.onDateChange.bind(this, "date")}
             />
           </div>
-          <div className="col-xl-6">
-            <label>Note</label>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text>
-                  <i className="fas fa-sticky-note"></i>
-                </InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                onChange={this.onChange.bind(this, "notes")}
-                maxLength="50"
-              />
-            </InputGroup>
-            <small className="text-muted">Max. 50 characters</small>
-          </div>
         </div>
+        <Accordion className="mt-2">
+          <Accordion.Toggle as={Button} variant="link" eventKey="0">
+            Additional Info
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey="0">
+            <div>
+              <div className="row">
+                <div className="col-xl-6">
+                  <label>Merchant</label>
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text>
+                        <i className="fas fa-store-alt"></i>
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <FormControl
+                      onChange={this.onChange.bind(this, "merchant")}
+                      maxLength="50"
+                    />
+                  </InputGroup>
+                </div>
+                <div className="col-xl-6">
+                  <label>Card</label>
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text>
+                        <i className="far fa-credit-card"></i>
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <FormControl
+                      onChange={this.onChange.bind(this, "card")}
+                      maxLength="50"
+                    />
+                  </InputGroup>
+                </div>
+              </div>
+              <div className="row mt-2">
+                <div className="col-xl-6">
+                  <label>Note</label>
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text>
+                        <i className="fas fa-sticky-note"></i>
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <FormControl
+                      onChange={this.onChange.bind(this, "notes")}
+                      maxLength="50"
+                    />
+                  </InputGroup>
+                  <small className="text-muted">Max. 50 characters</small>
+                </div>
+              </div>
+            </div>
+          </Accordion.Collapse>
+        </Accordion>
         <div className="form-group mt-3 ">
           <button
             type="submit"

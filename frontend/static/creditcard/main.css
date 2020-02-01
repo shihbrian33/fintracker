@@ -174,3 +174,11 @@ table#category tr:hover td a.button {
 #modalTable th {
   border-top: none;
 }
+
+.csv-input {
+  padding: 10px;
+  display: block;
+  margin: 15px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

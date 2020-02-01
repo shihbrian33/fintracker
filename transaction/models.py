@@ -30,6 +30,8 @@ class Transaction(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     notes = models.TextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    merchant = models.CharField(max_length=50, blank=True, null=True)
+    card = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return str(self.category)

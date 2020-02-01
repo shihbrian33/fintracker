@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
@@ -132,7 +131,7 @@ export class TransactionTable extends Component {
         <Modal
           show={this.state.show}
           onHide={this.handleClose.bind(this)}
-          size="lg"
+          size="xl"
           centered
         >
           <Modal.Header closeButton>
@@ -145,6 +144,8 @@ export class TransactionTable extends Component {
               <thead>
                 <tr>
                   <th>Date</th>
+                  <th>Card</th>
+                  <th>Merchant</th>
                   <th>Amount</th>
                   <th>Note</th>
                 </tr>
@@ -155,6 +156,8 @@ export class TransactionTable extends Component {
                   .map((transaction, index) => (
                     <tr key={index}>
                       <td>{transaction.date}</td>
+                      <td>{transaction.card}</td>
+                      <td>{transaction.merchant}</td>
                       <td>${transaction.amount}</td>
                       <td>
                         {transaction.notes}
@@ -171,14 +174,6 @@ export class TransactionTable extends Component {
               </tbody>
             </table>
           </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="danger"
-              onClick={this.handleDelete.bind(this, this.state.id)}
-            >
-              Delete
-            </Button>
-          </Modal.Footer>
         </Modal>
       </div>
     );

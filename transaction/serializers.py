@@ -8,7 +8,7 @@ class TransactionGetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ['id', 'amount', 'date_posted',
+        fields = ['id', 'amount', 'date_posted', 'merchant', 'card',
                   'date_updated', 'date', 'notes', 'category', 'cat_name', 'cat_type']
 
     def get_cat_name(self, obj):
@@ -25,7 +25,7 @@ class TransactionPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ['id', 'amount', 'date_posted',
+        fields = ['id', 'amount', 'date_posted', 'merchant', 'card',
                   'date_updated', 'date', 'notes', 'category', 'cat_name', 'cat_type']
 
     def get_cat_name(self, obj):

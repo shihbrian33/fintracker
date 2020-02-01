@@ -16,6 +16,7 @@ import { loadUser } from "../actions/auth";
 import PrivateRoute from "./common/PrivateRoute";
 import TransactionMonth from "./transactions/TransactionMonth";
 import Category from "./category/Category";
+import Import from "./import/Import";
 
 const alertOptions = {
   timeout: 3000,
@@ -64,6 +65,7 @@ class App extends Component {
                     component={TransactionMonth}
                   />
                   <PrivateRoute exact path="/categories" component={Category} />
+                  <PrivateRoute exact path="/import" component={Import} />
                 </Switch>
               </div>
             </div>
