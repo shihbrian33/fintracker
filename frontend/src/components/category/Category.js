@@ -86,7 +86,7 @@ export class Category extends Component {
                       {category.name}
                       <a
                         className="button"
-                        style={{ float: "right" }}
+                        style={{ float: "right", cursor: "pointer" }}
                         onClick={this.handleDelete.bind(this, category.id)}
                       >
                         <i className="far fa-trash-alt"></i>

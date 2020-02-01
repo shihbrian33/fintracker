@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+
 import {
   deleteTransaction,
   getPrevTransactions,
@@ -8,17 +11,6 @@ import {
 } from "../../actions/transaction";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
-function ModalRow({ row }) {
-  console.log(row);
-  return (
-    <tr>
-      <td>{row.date}</td>
-      <td>${row.amount}</td>
-      <td>{row.notes}</td>
-    </tr>
-  );
-}
 
 export class TransactionTable extends Component {
   static propTypes = {
@@ -44,7 +36,6 @@ export class TransactionTable extends Component {
   }
 
   handleDelete(id) {
-    this.setState({ show: false });
     this.props.deleteTransaction(id);
   }
 
@@ -76,10 +67,14 @@ export class TransactionTable extends Component {
   };
   render() {
     var totals = {};
+    var notes = {};
     for (var i in this.props.data) {
       let amount = this.props.data[i].amount;
       let name = this.props.data[i].cat_name;
       totals[name] = totals[name] ? totals[name] + amount : amount;
+      if (this.props.data[i].notes) {
+        notes[name] = 1;
+      }
     }
     return (
       <div className="col-xl-6">
@@ -93,7 +88,17 @@ export class TransactionTable extends Component {
                     className="button"
                     onClick={this.handleCopy.bind(this, this.props.tablename)}
                   >
-                    <i className="far fa-copy float-right" />
+                    <OverlayTrigger
+                      placement="top"
+                      delay={{ show: 100, hide: 400 }}
+                      overlay={
+                        <Tooltip id="tooltip-top">
+                          Copy from previous month
+                        </Tooltip>
+                      }
+                    >
+                      <i className="far fa-copy float-right" />
+                    </OverlayTrigger>
                   </a>
                 )}
               </th>
@@ -107,13 +112,11 @@ export class TransactionTable extends Component {
               >
                 <td>
                   {name}
-                  {/*
-                  {transaction.notes && (
+                  {notes[name] && (
                     <span style={{ float: "right" }}>
                       <i className="far fa-sticky-note" />
                     </span>
                   )}
-                  */}
                 </td>
                 <td className="td-right">${totals[name]}</td>
               </tr>
@@ -150,7 +153,20 @@ export class TransactionTable extends Component {
                 {this.props.data
                   .filter(t => t.cat_name == this.state.name)
                   .map((transaction, index) => (
-                    <ModalRow row={transaction} key={index} />
+                    <tr key={index}>
+                      <td>{transaction.date}</td>
+                      <td>${transaction.amount}</td>
+                      <td>
+                        {transaction.notes}
+                        <a
+                          className="button"
+                          style={{ float: "right", cursor: "pointer" }}
+                          onClick={this.handleDelete.bind(this, transaction.id)}
+                        >
+                          <i className="far fa-trash-alt"></i>
+                        </a>
+                      </td>
+                    </tr>
                   ))}
               </tbody>
             </table>

@@ -5,20 +5,29 @@ import FormControl from "react-bootstrap/FormControl";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { addTransaction, getCategories } from "../../actions/transaction";
+import DatePicker from "react-datepicker";
 
 export class TransactionForm extends Component {
+  constructor(props) {
+    super(props);
+    var date = new Date();
+    date = date.toISOString().substring(0, 10);
+    console.log(date);
+    this.state = {
+      category: 1,
+      notes: null,
+      amount: 0,
+      date: date
+    };
+  }
+
   static propTypes = {
     addTransaction: PropTypes.func.isRequired,
     getCategories: PropTypes.func.isRequired
   };
 
-  state = {
-    category: 1,
-    notes: null,
-    amount: 0
-  };
-
   onDateChange = (name, date) => {
+    console.log(date);
     this.setState({
       [name]: date.toISOString().substring(0, 10)
     });
@@ -30,10 +39,7 @@ export class TransactionForm extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { amount, category, notes } = this.state;
-    var date = new Date(this.props.year, this.props.month, 1)
-      .toISOString()
-      .slice(0, 10);
+    const { date, amount, category, notes } = this.state;
     const transaction = { date, amount, category, notes };
     this.props.addTransaction(transaction);
   };
@@ -47,6 +53,7 @@ export class TransactionForm extends Component {
   }
 
   render() {
+    console.log(this.state.date);
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">
@@ -70,11 +77,33 @@ export class TransactionForm extends Component {
                 aria-label="Amount"
                 onChange={this.onNumChange.bind(this, "amount")}
                 value={this.state.amount}
+                required
               />
             </InputGroup>
           </div>
         </div>
         <div className="row">
+          <div className="col-6">
+            <label
+              className="control-label requiredField"
+              htmlFor="id_transaction_date"
+            >
+              Date
+            </label>
+            <DatePicker
+              className="form-control"
+              todayButton="Today"
+              value={this.state.date}
+              required={true}
+              maxDate={new Date()}
+              showYearDropdown
+              dateFormatCalendar="MMMM"
+              yearDropdownItemNumber={15}
+              scrollableYearDropdown
+              showMonthDropdown
+              onChange={this.onDateChange.bind(this, "date")}
+            />
+          </div>
           <div className="col-xl-6">
             <label>Note</label>
             <InputGroup>
@@ -83,8 +112,12 @@ export class TransactionForm extends Component {
                   <i className="fas fa-sticky-note"></i>
                 </InputGroup.Text>
               </InputGroup.Prepend>
-              <FormControl onChange={this.onChange.bind(this, "notes")} />
+              <FormControl
+                onChange={this.onChange.bind(this, "notes")}
+                maxLength="50"
+              />
             </InputGroup>
+            <small className="text-muted">Max. 50 characters</small>
           </div>
         </div>
         <div className="form-group mt-3 ">
