@@ -12,11 +12,8 @@ export class CategoryMapping extends Component {
     var data = this.props.data;
     var categories = new Set();
     var categoryMap = {};
-    if (this.props.cols["skip"]) {
-      data.splice(0, 1);
-    }
-    console.log(data);
-    for (let i = 0; i < data.length; i++) {
+    let i = this.props.cols["skip"] ? 1 : 0;
+    for (i; i < data.length; i++) {
       let amountCol = this.props.cols["amount"].charCodeAt(0) - 65;
       let categoryCol = this.props.cols["category"].charCodeAt(0) - 65;
       if (data[i][amountCol] > 0) categories.add(data[i][categoryCol]);
@@ -39,7 +36,18 @@ export class CategoryMapping extends Component {
     return (
       <Card>
         <Card.Header>
-          <h2>Map CSV Columns</h2>
+          <h2>
+            <span>
+              <a
+                className="button"
+                style={{ cursor: "pointer" }}
+                onClick={this.props.handleBack}
+              >
+                <i className="fas fa-angle-left mr-3" />
+              </a>
+            </span>
+            Map CSV Columns
+          </h2>
         </Card.Header>
         <Card.Body>
           <Card.Title>

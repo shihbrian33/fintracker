@@ -9,16 +9,16 @@ export class Import extends Component {
   constructor(props) {
     super(props);
     var cols = {};
-    cols["date"] = "A";
-    cols["amount"] = "E";
-    cols["category"] = "D";
-    cols["merchant"] = "C";
-    cols["skip"] = true;
+    cols["date"] = 0;
+    cols["amount"] = 0;
+    cols["category"] = 0;
+    cols["merchant"] = 0;
+    cols["skip"] = false;
     this.state = {
       data: null,
       cols: cols,
       valid: false,
-      step1: true,
+      step1: false,
       step2: false,
       step3: false,
       categoryMap: {},
@@ -34,9 +34,17 @@ export class Import extends Component {
     this.setState({ step1: true });
   };
 
+  handleStep1Back() {
+    this.setState({ data: null });
+  }
+
   handleStep2Submit = data => {
     this.setState({ step2: true });
   };
+
+  handleStep2Back() {
+    this.setState({ step1: false, valid: false, cols: {} });
+  }
 
   handleStep1Change = event => {
     let cols = this.state.cols;
@@ -67,7 +75,7 @@ export class Import extends Component {
   };
 
   transactionTotals = transactions => {
-    this.setState({ step3: true, transactions: transactions });
+    this.setState({ step3: true, step2: true, transactions: transactions });
   };
 
   render() {
@@ -87,6 +95,8 @@ export class Import extends Component {
           valid={this.state.valid}
           vals={this.state.cols}
           handleSubmit={this.handleStep1Submit}
+          data={this.state.data}
+          handleBack={this.handleStep1Back.bind(this)}
         />
       );
     } else if (!this.state.step2) {
@@ -97,6 +107,7 @@ export class Import extends Component {
             cols={this.state.cols}
             handleChange={this.handleCatMapChange}
             handleSubmit={this.handleStep2Submit}
+            handleBack={this.handleStep2Back.bind(this)}
           />
         );
       } else {

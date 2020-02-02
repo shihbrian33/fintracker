@@ -29,13 +29,15 @@ export class CategorySelect extends Component {
           value={this.props.value}
         >
           <option disabled value="0" style={{ display: "none" }} />
-          <optgroup label="Income">
-            {income.map(category => (
-              <option value={category.id} key={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </optgroup>
+          {this.props.income && (
+            <optgroup label="Income">
+              {income.map(category => (
+                <option value={category.id} key={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </optgroup>
+          )}
           <optgroup label="Recurring Bills">
             {recurring.map(category => (
               <option value={category.id} key={category.id}>

@@ -37,7 +37,9 @@ export class TransactionMapping extends Component {
       .filter(transaction => transaction[dateCol] && transaction[amountCol] > 0)
       .map(trans => {
         let transaction = {};
-        transaction["date"] = trans[dateCol];
+        var inputDate = new Date(Date.parse(trans[dateCol]));
+        var formattedDate = inputDate.toISOString().substring(0, 10);
+        transaction["date"] = formattedDate;
         transaction["amount"] = trans[amountCol];
         transaction["merchant"] = merchantCol ? trans[merchantCol] : "";
         if (categoryCol) {
@@ -62,9 +64,16 @@ export class TransactionMapping extends Component {
   };
 
   handleSubmit() {
-    this.props.handleSummary(this.state.transactions);
-    this.props.addTransaction(this.state.transactions);
+    this.props.addTransaction(this.state.transactions).then(res => {
+      this.props.handleSummary(this.state.transactions);
+    });
   }
+
+  handleDelete = index => {
+    let data = this.state.transactions;
+    data.splice(index, 1);
+    this.setState({ transactions: data });
+  };
 
   render() {
     let valid = true;
@@ -89,6 +98,7 @@ export class TransactionMapping extends Component {
           <table className="table">
             <thead>
               <tr>
+                <th></th>
                 <th>Date</th>
                 {this.state.merchantCol && <th>Merchant</th>}
                 <th>Amount</th>
@@ -99,6 +109,15 @@ export class TransactionMapping extends Component {
               {this.state.transactions.map((transaction, index) => {
                 return (
                   <tr key={index}>
+                    <td style={{ width: "20px" }}>
+                      <a
+                        className="button"
+                        style={{ cursor: "pointer" }}
+                        onClick={this.handleDelete.bind(this, index)}
+                      >
+                        <i className="far fa-trash-alt" />
+                      </a>
+                    </td>
                     <td>{transaction.date}</td>
                     {this.state.merchantCol && <td>{transaction.merchant}</td>}
                     <td>{transaction.amount}</td>
@@ -107,6 +126,7 @@ export class TransactionMapping extends Component {
                         onChange={this.onChange.bind(this, index)}
                         value={transaction.category ? transaction.category : 0}
                         header={false}
+                        income={false}
                       />
                     </td>
                   </tr>

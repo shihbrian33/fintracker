@@ -64,6 +64,7 @@ export class TransactionForm extends Component {
               name="category"
               value={this.state.category}
               header={true}
+              income={true}
             />
           </div>
           <div className="col-xl-6">
