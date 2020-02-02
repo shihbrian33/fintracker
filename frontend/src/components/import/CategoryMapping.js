@@ -61,7 +61,6 @@ export class CategoryMapping extends Component {
   };
 
   render() {
-    console.log(this.state.categoryMap);
     return (
       <Card>
         <Card.Header>

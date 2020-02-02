@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import CSVReader from "react-csv-reader";
 import ColumnDefine from "./ColumnDefine";
 import CategoryMapping from "./CategoryMapping";
 import TransactionMapping from "./TransactionMapping";
 import ImportFinish from "./ImportFinish";
+import UploadCSV from "./UploadCSV";
 
 export class Import extends Component {
   constructor(props) {
@@ -80,14 +80,7 @@ export class Import extends Component {
 
   render() {
     if (!this.state.data) {
-      return (
-        <div className="container">
-          <CSVReader
-            cssClass="react-csv-input"
-            onFileLoaded={this.handleUpload}
-          />
-        </div>
-      );
+      return <UploadCSV onLoad={this.handleUpload.bind(this)} />;
     } else if (!this.state.step1) {
       return (
         <ColumnDefine
