@@ -49,14 +49,10 @@ export class TransactionForm extends Component {
     e.preventDefault();
     const { date, amount, category, notes, merchant, card } = this.state;
     const transaction = { date, amount, category, notes, merchant, card };
-    console.log(transaction);
     this.props.addTransaction(transaction);
   };
 
   onChange = (name, e) => {
-    console.log(name);
-    console.log(e.target.value);
-
     this.setState({ [name]: e.target.value });
   };
 

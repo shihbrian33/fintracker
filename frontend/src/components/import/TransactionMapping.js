@@ -3,6 +3,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import CategorySelect from "../category/CategorySelect";
 import { addTransaction } from "../../actions/transaction";
+import { getCards } from "../../actions/cards";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CategoryForm from "../category/CategoryForm";
@@ -41,11 +42,13 @@ export class TransactionMapping extends Component {
     amountCol: -1,
     merchantCol: -1,
     categoryCol: -1,
-    transactions: []
+    transactions: [],
+    card: ""
   };
 
   static propTypes = {
-    addTransaction: PropTypes.func.isRequired
+    addTransaction: PropTypes.func.isRequired,
+    getCards: PropTypes.func.isRequired
   };
 
   componentDidMount() {
@@ -84,6 +87,10 @@ export class TransactionMapping extends Component {
       categoryCol: categoryCol,
       transactions: transactions
     });
+    var args = {
+      active: 1
+    };
+    this.props.getCards(args);
   }
 
   onChange = (index, e) => {
@@ -92,9 +99,19 @@ export class TransactionMapping extends Component {
     this.setState({ transactions: transactions });
   };
 
+  onChangeCard = e => {
+    this.setState({ card: e.target.value });
+  };
+
   handleSubmit() {
-    this.props.addTransaction(this.state.transactions).then(res => {
-      this.props.handleSummary(this.state.transactions);
+    var transactions = this.state.transactions;
+    if (this.state.card) {
+      transactions.forEach(transaction => {
+        transaction["card"] = this.state.card;
+      });
+    }
+    this.props.addTransaction(transactions).then(() => {
+      this.props.handleSummary(transactions);
     });
   }
 
@@ -127,6 +144,22 @@ export class TransactionMapping extends Component {
           <Card.Title>
             Select a category for each transaction imported from the CSV file.
           </Card.Title>
+          <label>Optional: Link this import to a credit card</label>
+          <select
+            value={this.state.card}
+            className="select form-control"
+            onChange={this.onChangeCard.bind(this)}
+            style={{ maxWidth: "20%" }}
+          >
+            <option value="" disabled style={{ display: "none" }}></option>
+            {this.props.cards.map(card => {
+              return (
+                <option value={card.name} key={card.id}>
+                  {card.name}
+                </option>
+              );
+            })}
+          </select>
         </Card.Body>
         <Card.Body>
           <table className="table">
@@ -182,4 +215,10 @@ export class TransactionMapping extends Component {
   }
 }
 
-export default connect(null, { addTransaction })(TransactionMapping);
+const mapStateToProps = state => ({
+  cards: state.cards.cards
+});
+
+export default connect(mapStateToProps, { addTransaction, getCards })(
+  TransactionMapping
+);
