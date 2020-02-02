@@ -5,6 +5,7 @@ import FormControl from "react-bootstrap/FormControl";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { addTransaction } from "../../actions/transaction";
+import { getCards } from "../../actions/cards";
 import DatePicker from "react-datepicker";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
@@ -20,13 +21,14 @@ export class TransactionForm extends Component {
       amount: 0,
       date: date,
       merchant: null,
-      card: null,
+      card: "",
       valid: false
     };
   }
 
   static propTypes = {
-    addTransaction: PropTypes.func.isRequired
+    addTransaction: PropTypes.func.isRequired,
+    getCards: PropTypes.func.isRequired
   };
 
   onDateChange = (name, date) => {
@@ -47,12 +49,23 @@ export class TransactionForm extends Component {
     e.preventDefault();
     const { date, amount, category, notes, merchant, card } = this.state;
     const transaction = { date, amount, category, notes, merchant, card };
+    console.log(transaction);
     this.props.addTransaction(transaction);
   };
 
   onChange = (name, e) => {
+    console.log(name);
+    console.log(e.target.value);
+
     this.setState({ [name]: e.target.value });
   };
+
+  componentDidMount() {
+    var args = {
+      active: 1
+    };
+    this.props.getCards(args);
+  }
 
   render() {
     return (
@@ -130,17 +143,24 @@ export class TransactionForm extends Component {
                 </div>
                 <div className="col-xl-6">
                   <label>Card</label>
-                  <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>
-                        <i className="far fa-credit-card"></i>
-                      </InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <FormControl
-                      onChange={this.onChange.bind(this, "card")}
-                      maxLength="50"
-                    />
-                  </InputGroup>
+                  <select
+                    value={this.state.card}
+                    className="select form-control"
+                    onChange={this.onChange.bind(this, "card")}
+                  >
+                    <option
+                      value=""
+                      disabled
+                      style={{ display: "none" }}
+                    ></option>
+                    {this.props.cards.map(card => {
+                      return (
+                        <option value={card.name} key={card.id}>
+                          {card.name}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
               </div>
               <div className="row mt-2">
@@ -179,4 +199,10 @@ export class TransactionForm extends Component {
   }
 }
 
-export default connect(null, { addTransaction })(TransactionForm);
+const mapStateToProps = state => ({
+  cards: state.cards.cards
+});
+
+export default connect(mapStateToProps, { addTransaction, getCards })(
+  TransactionForm
+);

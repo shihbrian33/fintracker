@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import CardSection from "./CardSection";
-import Spinner from "react-bootstrap/Spinner";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getCards } from "../../actions/cards";

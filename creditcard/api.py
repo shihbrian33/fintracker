@@ -9,7 +9,14 @@ class CardViewSet(viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        return CreditCard.objects.filter(author=self.request.user)
+        if self.action == 'list':
+            active = self.request.query_params.get('active')
+            filter_kwargs = {'author': self.request.user}
+            if active:
+                filter_kwargs['active'] = active
+            return CreditCard.objects.filter(**filter_kwargs)
+        else:
+            return CreditCard.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

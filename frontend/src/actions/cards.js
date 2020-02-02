@@ -4,9 +4,14 @@ import { tokenConfig } from "./auth";
 import { createMessage } from "./messages";
 import { returnErrors } from "./messages";
 
-export const getCards = () => (dispatch, getState) => {
+export const getCards = args => (dispatch, getState) => {
+  var config = tokenConfig(getState);
+  for (var name in args) {
+    config.params[name] = args[name];
+  }
+
   axios
-    .get("/api/cards/", tokenConfig(getState))
+    .get("/api/cards/", config)
     .then(res => {
       dispatch({
         type: GET_CARDS,

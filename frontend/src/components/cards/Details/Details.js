@@ -6,7 +6,6 @@ import DetailText from "./DetailText";
 import PropTypes from "prop-types";
 import { getCard, deleteCard, updateCard } from "../../../actions/cards";
 import { Redirect } from "react-router-dom";
-import Spinner from "react-bootstrap/Spinner";
 
 export class CardDetails extends Component {
   constructor(props) {
