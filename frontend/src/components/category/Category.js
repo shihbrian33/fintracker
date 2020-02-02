@@ -30,7 +30,7 @@ function ShowModal(date) {
           <Modal.Title>Add Category</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <CategoryForm close={handleSubmit} />
+          <CategoryForm close={handleSubmit} income={true} />
         </Modal.Body>
       </Modal>
     </>

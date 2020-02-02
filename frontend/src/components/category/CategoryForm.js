@@ -37,7 +37,7 @@ export class CategoryForm extends Component {
               className="select form-control"
               onChange={this.onChange.bind(this, "type")}
             >
-              <option value="1">Income</option>
+              {this.props.income && <option value="1">Income</option>}
               <option value="2">Recurring Bill</option>
               <option value="3">Expense</option>
             </select>

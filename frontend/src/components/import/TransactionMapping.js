@@ -1,10 +1,39 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import CategorySelect from "../category/CategorySelect";
 import { addTransaction } from "../../actions/transaction";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import CategoryForm from "../category/CategoryForm";
+import Modal from "react-bootstrap/Modal";
+
+function ShowModal() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleSubmit = () => {
+    setShow(false);
+  };
+  return (
+    <>
+      <Button variant="success" onClick={handleShow}>
+        Add Category
+      </Button>
+
+      <Modal show={show} onHide={handleClose} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <CategoryForm close={handleSubmit} income={false} />
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}
 
 export class TransactionMapping extends Component {
   state = {
@@ -87,7 +116,12 @@ export class TransactionMapping extends Component {
     return (
       <Card>
         <Card.Header>
-          <h2>Transaction Category</h2>
+          <h2>
+            Transaction Category
+            <span style={{ float: "right" }}>
+              <ShowModal />
+            </span>
+          </h2>
         </Card.Header>
         <Card.Body>
           <Card.Title>
