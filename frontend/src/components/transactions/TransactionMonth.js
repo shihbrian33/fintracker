@@ -43,7 +43,7 @@ function ShowModal(date) {
 function get_total(arr) {
   let total = 0;
   arr.forEach(item => {
-    total += item.amount;
+    total += Number(item.amount);
   });
   return total;
 }
@@ -170,25 +170,25 @@ export class TransactionMonth extends Component {
                   <tr>
                     <td>Income</td>
                     <td className="td-right pos-amount">
-                      +${get_total(income)}
+                      +${get_total(income).toFixed(2)}
                     </td>
                   </tr>
                   <tr>
                     <td>Recurring Bills</td>
                     <td className="td-right neg-amount">
-                      -${get_total(recurring)}
+                      -${get_total(recurring).toFixed(2)}
                     </td>
                   </tr>
                   <tr>
                     <td>Expenses</td>
                     <td className="td-right neg-amount">
-                      -${get_total(expenses)}
+                      -${get_total(expenses).toFixed(2)}
                     </td>
                   </tr>
                   <tr>
                     <td>Total</td>
                     <td className={"td-right " + totclass}>
-                      <strong>${total}</strong>
+                      <strong>${total.toFixed(2)}</strong>
                     </td>
                   </tr>
                 </tbody>

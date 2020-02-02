@@ -1,22 +1,34 @@
 import React, { Component } from "react";
+import { getCategories } from "../../actions/transaction";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 function arrfilter(type, data) {
   return data.filter(category => category.type === type);
 }
 
 export class CategorySelect extends Component {
+  static propTypes = {
+    getCategories: PropTypes.func.isRequired
+  };
+
+  componentDidMount() {
+    this.props.getCategories();
+  }
+
   render() {
     var income = arrfilter(1, this.props.categories);
     var recurring = arrfilter(2, this.props.categories);
     var expenses = arrfilter(3, this.props.categories);
     return (
       <div className="form-group">
-        <label>Category</label>
+        {this.props.header && <label>Category</label>}
         <select
           className="select form-control"
-          onChange={this.props.onChange.bind(this, this.props.name)}
+          onChange={this.props.onChange}
+          value={this.props.value}
         >
-          >
+          <option disabled value="0" style={{ display: "none" }} />
           <optgroup label="Income">
             {income.map(category => (
               <option value={category.id} key={category.id}>
@@ -44,4 +56,8 @@ export class CategorySelect extends Component {
   }
 }
 
-export default CategorySelect;
+const mapStateToProps = state => ({
+  categories: state.transaction.categories
+});
+
+export default connect(mapStateToProps, { getCategories })(CategorySelect);

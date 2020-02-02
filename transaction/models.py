@@ -23,7 +23,8 @@ class Category(models.Model):
 
 
 class Transaction(models.Model):
-    amount = models.IntegerField(validators=[MinValueValidator(0)])
+    amount = models.DecimalField(
+        max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     date_posted = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
     date = models.DateField()

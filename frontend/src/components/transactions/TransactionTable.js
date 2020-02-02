@@ -70,11 +70,14 @@ export class TransactionTable extends Component {
     for (var i in this.props.data) {
       let amount = this.props.data[i].amount;
       let name = this.props.data[i].cat_name;
-      totals[name] = totals[name] ? totals[name] + amount : amount;
+      totals[name] = totals[name]
+        ? Number(totals[name]) + Number(amount)
+        : Number(amount);
       if (this.props.data[i].notes) {
         notes[name] = 1;
       }
     }
+    console.log(totals);
     return (
       <div className="col-xl-6">
         <table className="table" id="transaction">
@@ -117,13 +120,13 @@ export class TransactionTable extends Component {
                     </span>
                   )}
                 </td>
-                <td className="td-right">${totals[name]}</td>
+                <td className="td-right">${totals[name].toFixed(2)}</td>
               </tr>
             ))}
             <tr>
               <td>Total</td>
               <td className="td-right">
-                <strong>${this.props.total}</strong>
+                <strong>${this.props.total.toFixed(2)}</strong>
               </td>
             </tr>
           </tbody>

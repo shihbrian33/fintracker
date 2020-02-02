@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import CategorySelect from "./CategorySelect";
+import CategorySelect from "../category/CategorySelect";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addTransaction, getCategories } from "../../actions/transaction";
+import { addTransaction } from "../../actions/transaction";
 import DatePicker from "react-datepicker";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
@@ -14,31 +14,33 @@ export class TransactionForm extends Component {
     super(props);
     var date = new Date();
     date = date.toISOString().substring(0, 10);
-    console.log(date);
     this.state = {
-      category: 1,
+      category: 0,
       notes: null,
       amount: 0,
       date: date,
       merchant: null,
-      card: null
+      card: null,
+      valid: false
     };
   }
 
   static propTypes = {
-    addTransaction: PropTypes.func.isRequired,
-    getCategories: PropTypes.func.isRequired
+    addTransaction: PropTypes.func.isRequired
   };
 
   onDateChange = (name, date) => {
-    console.log(date);
     this.setState({
       [name]: date.toISOString().substring(0, 10)
     });
   };
 
   onNumChange = (name, amount) => {
-    this.setState({ [name]: amount.target.value.replace(/\D/, "") });
+    let val = amount.target.value;
+    const regex = /^\d+[.]{0,1}\d{0,2}$/;
+    if (val.match(regex)) {
+      this.setState({ [name]: val });
+    }
   };
 
   onSubmit = e => {
@@ -52,21 +54,16 @@ export class TransactionForm extends Component {
     this.setState({ [name]: e.target.value });
   };
 
-  componentDidMount() {
-    this.props.getCategories();
-  }
-
   render() {
-    console.log(this.state.date);
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">
           <div className="col-xl-6">
             <CategorySelect
-              onChange={this.onChange}
+              onChange={this.onChange.bind(this, "category")}
               name="category"
-              value={this.props.category}
-              categories={this.props.categories}
+              value={this.state.category}
+              header={true}
             />
           </div>
           <div className="col-xl-6">
@@ -171,6 +168,7 @@ export class TransactionForm extends Component {
             className="btn btn-primary"
             style={{ float: "right" }}
             onClick={this.props.close}
+            disabled={!(this.state.amount && this.state.category)}
           >
             Submit
           </button>
@@ -180,10 +178,4 @@ export class TransactionForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  categories: state.transaction.categories
-});
-
-export default connect(mapStateToProps, { addTransaction, getCategories })(
-  TransactionForm
-);
+export default connect(null, { addTransaction })(TransactionForm);

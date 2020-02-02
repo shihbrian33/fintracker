@@ -9,7 +9,7 @@ export class Step1 extends Component {
     return (
       <Card>
         <Card.Header>
-          <h2>Step 1</h2>
+          <h2>Define CSV Columns</h2>
         </Card.Header>
         <Card.Body>
           <Card.Title>
@@ -70,11 +70,19 @@ export class Step1 extends Component {
                 />
               </Form.Group>
             </Form.Row>
-
+            <Form.Check
+              type="checkbox"
+              id="skip"
+              name="skip"
+              checked={this.props.vals["skip"]}
+              onChange={this.props.handleChange}
+              label="Skip first row"
+            />
             <Button
               variant="primary"
-              type="submit"
-              disabled={!this.props.valid}
+              type="button"
+              onClick={this.props.handleSubmit}
+              className="mt-3"
             >
               Next Step
             </Button>
