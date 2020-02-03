@@ -51,7 +51,6 @@ export class Form extends Component {
   componentWillReceiveProps(prevProps) {
     let card = Object.assign({}, this.props.card);
     card.loaded = 1;
-    console.log(card);
     this.setState(card);
   }
 

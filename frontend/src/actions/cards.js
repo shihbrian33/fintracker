@@ -90,7 +90,6 @@ export const updateCard = (card, id) => (dispatch, getState) => {
       });
     })
     .catch(err => {
-      console.log("TESTING");
       dispatch(returnErrors(err.response.data, err.response.status));
     });
 

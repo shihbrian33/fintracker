@@ -16,7 +16,6 @@ export class RegConfirm extends Component {
   }
 
   render() {
-    console.log(this.props.auth);
     if (
       !this.state.redirect &&
       this.props.auth.user &&

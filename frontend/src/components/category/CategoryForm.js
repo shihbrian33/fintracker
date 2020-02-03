@@ -19,7 +19,6 @@ export class CategoryForm extends Component {
     e.preventDefault();
     const { name, type } = this.state;
     const category = { name, type };
-    console.log(category);
     this.props.addCategory(category);
   };
 

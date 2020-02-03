@@ -77,7 +77,6 @@ export class TransactionTable extends Component {
         notes[name] = 1;
       }
     }
-    console.log(totals);
     return (
       <div className="col-xl-6">
         <table className="table" id="transaction">

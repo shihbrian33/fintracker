@@ -74,6 +74,7 @@ export class TransactionMonth extends Component {
     } = this.props;
     var args = {};
     if (!params.month || !params.year) {
+      console.log("no params");
       args = {
         month: this.state.month,
         year: this.state.year
@@ -83,9 +84,10 @@ export class TransactionMonth extends Component {
         month: params.month,
         year: params.year
       };
+      console.log("has params");
+      this.setState({ month: params.month, year: params.year });
     }
     this.props.getTransactions(args);
-    this.setState({ month: args.month, year: args.year });
   }
 
   componentWillReceiveProps() {
