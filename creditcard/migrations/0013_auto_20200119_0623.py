@@ -9,10 +9,4 @@ class Migration(migrations.Migration):
         ('creditcard', '0012_auto_20200116_0701'),
     ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='creditcard',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-    ]
+    operations = []
