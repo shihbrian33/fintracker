@@ -27,6 +27,12 @@ export class CategoryForm extends Component {
     this.setState({ [name]: e.target.value });
   };
 
+  componentDidMount() {
+    if (!this.props.income) {
+      this.setState({ type: 2 });
+    }
+  }
+
   render() {
     return (
       <form onSubmit={this.onSubmit}>
