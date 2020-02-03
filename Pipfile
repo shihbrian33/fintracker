@@ -17,6 +17,7 @@ django-model-utils = "*"
 pillow = "*"
 pylint-django = "*"
 django-heroku = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"
