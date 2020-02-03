@@ -66,6 +66,7 @@ class App extends Component {
                   />
                   <PrivateRoute exact path="/categories" component={Category} />
                   <PrivateRoute exact path="/import" component={Import} />
+                  <PrivateRoute exact path="/" component={TransactionMonth} />
                 </Switch>
               </div>
             </div>
