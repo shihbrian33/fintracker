@@ -16,6 +16,7 @@ bootstrap4 = "*"
 django-model-utils = "*"
 pillow = "*"
 pylint-django = "*"
+django-heroku = "*"
 
 [requires]
 python_version = "3.6"

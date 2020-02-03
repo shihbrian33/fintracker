@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import json
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,7 +31,7 @@ SECRET_KEY = data['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['52.12.64.192', 'localhost']
+ALLOWED_HOSTS = ['fintrackerapp.herokuapp.com']
 
 
 # Application definition
@@ -127,8 +128,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -143,4 +145,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = data['EMAIL_NAME']
 EMAIL_HOST_PASSWORD = data['EMAIL_PASS']
 
-USE_L10N = False
+django_heroku.settings(locals())
