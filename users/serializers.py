@@ -40,6 +40,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': account_activation_token.make_token(user),
         })
+        print(message)
         to_email = validated_data['email']
         email = EmailMessage(subject, message, to=[to_email])
         email.send()
