@@ -39,20 +39,21 @@ export const login = (username, password) => dispatch => {
 
   const body = JSON.stringify({ username, password });
 
-  axios
-    .post("/api/auth/login", body, config)
+  var req = axios.post("/api/auth/login", body, config);
+  req
     .then(res => {
+      console.log(res);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
       });
     })
     .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: LOGIN_FAIL
       });
     });
+  return req;
 };
 
 export const register = ({ username, password, email }) => dispatch => {
@@ -64,8 +65,9 @@ export const register = ({ username, password, email }) => dispatch => {
 
   const body = JSON.stringify({ username, password, email });
 
-  axios
-    .post("/api/auth/register", body, config)
+  var req = axios.post("/api/auth/register", body, config);
+
+  req
     .then(res => {
       dispatch({
         type: REGISTER_SUCCESS,
@@ -73,11 +75,11 @@ export const register = ({ username, password, email }) => dispatch => {
       });
     })
     .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: REGISTER_FAIL
       });
     });
+  return req;
 };
 
 export const logout = () => (dispatch, getState) => {

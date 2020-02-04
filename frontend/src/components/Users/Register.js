@@ -10,7 +10,8 @@ export class Register extends Component {
     username: "",
     email: "",
     password: "",
-    password2: ""
+    password2: "",
+    error: {}
   };
 
   static propTypes = {
@@ -22,14 +23,21 @@ export class Register extends Component {
     e.preventDefault();
     const { username, email, password, password2 } = this.state;
     if (password !== password2) {
-      this.props.createMessage({ passwordNotMatch: "Passwords do not match" });
+      let error = { password: "Passwords do not match" };
+      this.setState({ error: error, password: "", password2: "" });
     } else {
       const newUser = {
         email,
         username,
         password
       };
-      this.props.register(newUser);
+      this.props.register(newUser).catch(err => {
+        let error = {};
+        Object.keys(err.response.data).map(key => {
+          error[key] = err.response.data[key];
+        });
+        this.setState({ error: error });
+      });
     }
   };
 
@@ -52,31 +60,55 @@ export class Register extends Component {
               <label>Username</label>
               <input
                 type="text"
-                className="form-control"
+                className={
+                  "form-control " +
+                  (this.state.error["username"] ? "is-invalid" : "")
+                }
                 name="username"
                 onChange={this.onChange}
                 value={username}
               />
+              {this.state.error["username"] && (
+                <div className="invalid-feedback">
+                  {this.state.error["username"]}
+                </div>
+              )}
             </div>
             <div className="form-group">
               <label>Email</label>
               <input
                 type="email"
-                className="form-control"
+                className={
+                  "form-control " +
+                  (this.state.error["email"] ? "is-invalid" : "")
+                }
                 name="email"
                 onChange={this.onChange}
                 value={email}
               />
+              {this.state.error["email"] && (
+                <div className="invalid-feedback">
+                  {this.state.error["email"]}
+                </div>
+              )}
             </div>
             <div className="form-group">
               <label>Password</label>
               <input
                 type="password"
-                className="form-control"
+                className={
+                  "form-control " +
+                  (this.state.error["password"] ? "is-invalid" : "")
+                }
                 name="password"
                 onChange={this.onChange}
                 value={password}
               />
+              {this.state.error["password"] && (
+                <div className="invalid-feedback">
+                  {this.state.error["password"]}
+                </div>
+              )}
             </div>
             <div className="form-group">
               <label>Confirm Password</label>

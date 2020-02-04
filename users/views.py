@@ -14,48 +14,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
 
-def login_user(request):
-    if request.method == 'GET':
-        if request.user.is_authenticated:
-            return redirect('/#/cards/new')
-        return render(request, 'users/login.html')
-    elif request.method == 'POST':
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('/#/cards/new')
-        else:
-            messages.error(request, f'Incorrect username/password')
-            return redirect('login')
-
-
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
-            curr_site = get_current_site(request)
-            subject = "Activate your account"
-            message = render_to_string('users/account_activation.html', {
-                'user': user,
-                'domain': curr_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            })
-            to_email = form.cleaned_data.get('email')
-            email = EmailMessage(subject, message, to=[to_email])
-            email.send()
-            #messages.success(request, f'Please confirm your email address to complete the registration')
-            return render(request, 'users/account_activation_confirm.html', {'form': form})
-    else:
-        form = UserRegisterForm()
-    return render(request, 'users/register.html', {'form': form})
-
-
 @login_required
 def profile(request):
     if request.method == 'POST':

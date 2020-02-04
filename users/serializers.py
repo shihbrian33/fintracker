@@ -21,6 +21,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
+    def validate_email(self, email):
+        user = User.objects.filter(email=email)
+        if(user):
+            raise serializers.ValidationError("Email already in use")
+        return email
+
     def create(self, validated_data):
         user = User.objects.create_user(
             validated_data['username'], validated_data['email'], validated_data['password'], is_active=False)
@@ -33,7 +39,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         })
         to_email = validated_data['email']
         email = EmailMessage(subject, message, to=[to_email])
-        print('Email sent')
         email.send()
         return user
 
@@ -46,4 +51,4 @@ class LoginSerializer(serializers.Serializer):
         user = authenticate(**data)
         if user and user.is_active:
             return user
-        raise serializers.ValidationError("Incorrect Credentials")
+        raise serializers.ValidationError('Incorrect username/password')
