@@ -49,18 +49,11 @@ export class Import extends Component {
   handleStep1Change = event => {
     let cols = this.state.cols;
     let valid = false;
-
+    let val = event.target.value.toUpperCase();
     if (event.target.name == "skip") {
       cols["skip"] = event.target.checked;
     } else {
-      let val = event.target.value.toUpperCase();
-      if (val.length >= 1) {
-        val = val.charAt(val.length - 1);
-        let alpha = /^[A-Za]$/;
-        if (val.match(alpha)) cols[event.target.name] = val;
-      } else {
-        cols[event.target.name] = 0;
-      }
+      cols[event.target.name] = val;
     }
     if (cols["date"] && cols["amount"]) {
       valid = true;

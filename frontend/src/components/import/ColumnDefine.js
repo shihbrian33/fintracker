@@ -5,6 +5,16 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 
 export class ColumnDefine extends Component {
+  onChange = (name, event) => {
+    let val = event.target.value.toUpperCase();
+    if (val.length >= 1) {
+      val = val.charAt(val.length - 1);
+      let alpha = /^[A-Za]$/;
+      if (val.match(alpha)) this.props.handleChange(event);
+      else return;
+    }
+    this.refs[name].focus();
+  };
   render() {
     var header = [];
     header.push(<th key="0">#</th>);
@@ -51,7 +61,8 @@ export class ColumnDefine extends Component {
                     value={
                       this.props.vals["date"] ? this.props.vals["date"] : ""
                     }
-                    onChange={this.props.handleChange}
+                    onChange={this.onChange.bind(this, "input_2")}
+                    ref="input_1"
                   />
                 </Form.Group>
 
@@ -63,7 +74,8 @@ export class ColumnDefine extends Component {
                     value={
                       this.props.vals["amount"] ? this.props.vals["amount"] : ""
                     }
-                    onChange={this.props.handleChange}
+                    onChange={this.onChange.bind(this, "input_3")}
+                    ref="input_2"
                   />
                 </Form.Group>
 
@@ -76,7 +88,8 @@ export class ColumnDefine extends Component {
                         ? this.props.vals["merchant"]
                         : ""
                     }
-                    onChange={this.props.handleChange}
+                    onChange={this.onChange.bind(this, "input_4")}
+                    ref="input_3"
                   />
                 </Form.Group>
 
@@ -89,7 +102,8 @@ export class ColumnDefine extends Component {
                         ? this.props.vals["category"]
                         : ""
                     }
-                    onChange={this.props.handleChange}
+                    onChange={this.onChange.bind(this, "input_4")}
+                    ref="input_4"
                   />
                 </Form.Group>
               </Form.Row>

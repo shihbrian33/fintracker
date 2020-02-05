@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import CategoryForm from "../category/CategoryForm";
 import Modal from "react-bootstrap/Modal";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
 
 function ShowModal() {
   const [show, setShow] = useState(false);
@@ -93,9 +95,9 @@ export class TransactionMapping extends Component {
     this.props.getCards(args);
   }
 
-  onChange = (index, e) => {
+  onChange = (index, name, e) => {
     let transactions = this.state.transactions;
-    transactions[index].category = e.target.value;
+    transactions[index][name] = e.target.value;
     this.setState({ transactions: transactions });
   };
 
@@ -169,6 +171,7 @@ export class TransactionMapping extends Component {
                 <th>Date</th>
                 {this.state.merchantCol && <th>Merchant</th>}
                 <th>Amount</th>
+                <th>Note</th>
                 <th>Category</th>
               </tr>
             </thead>
@@ -189,8 +192,16 @@ export class TransactionMapping extends Component {
                     {this.state.merchantCol && <td>{transaction.merchant}</td>}
                     <td>{transaction.amount}</td>
                     <td>
+                      <InputGroup>
+                        <FormControl
+                          onChange={this.onChange.bind(this, index, "notes")}
+                          maxLength="50"
+                        />
+                      </InputGroup>
+                    </td>
+                    <td>
                       <CategorySelect
-                        onChange={this.onChange.bind(this, index)}
+                        onChange={this.onChange.bind(this, index, "category")}
                         value={transaction.category ? transaction.category : 0}
                         header={false}
                         income={false}
