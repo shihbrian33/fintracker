@@ -53,11 +53,13 @@ export class TransactionTable extends Component {
       var results = [];
       for (var i in res.data) {
         let trans = res.data[i];
+        let date = new Date(trans.date);
+        let newDate = new Date(date.setMonth(date.getMonth() + 1));
         let copy = {
           amount: trans.amount,
           notes: trans.notes,
           category: trans.category,
-          date: this.props.currYear + "-" + this.props.currMonth + "-01"
+          date: newDate.toISOString().substring(0, 10)
         };
         results.push(copy);
       }
@@ -157,10 +159,10 @@ export class TransactionTable extends Component {
                   .filter(t => t.cat_name == this.state.name)
                   .map((transaction, index) => (
                     <tr key={index}>
-                      <td>{transaction.date}</td>
+                      <td style={{ width: "10%" }}>{transaction.date}</td>
                       <td>{transaction.card}</td>
                       <td>{transaction.merchant}</td>
-                      <td>${transaction.amount}</td>
+                      <td style={{ width: "10%" }}>${transaction.amount}</td>
                       <td>
                         {transaction.notes}
                         <a

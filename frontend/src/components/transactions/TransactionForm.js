@@ -106,7 +106,6 @@ export class TransactionForm extends Component {
               todayButton="Today"
               value={this.state.date}
               required={true}
-              maxDate={new Date()}
               showYearDropdown
               dateFormatCalendar="MMMM"
               yearDropdownItemNumber={15}
