@@ -11,7 +11,8 @@ export class Register extends Component {
     email: "",
     password: "",
     password2: "",
-    error: {}
+    error: {},
+    sent: 0
   };
 
   static propTypes = {
@@ -31,13 +32,18 @@ export class Register extends Component {
         username,
         password
       };
-      this.props.register(newUser).catch(err => {
-        let error = {};
-        Object.keys(err.response.data).map(key => {
-          error[key] = err.response.data[key];
+      this.props
+        .register(newUser)
+        .then(() => {
+          this.setState({ sent: 1 });
+        })
+        .catch(err => {
+          let error = {};
+          Object.keys(err.response.data).map(key => {
+            error[key] = err.response.data[key];
+          });
+          this.setState({ error: error });
         });
-        this.setState({ error: error });
-      });
     }
   };
 
@@ -47,7 +53,7 @@ export class Register extends Component {
     });
 
   render() {
-    if (this.props.auth.confirmation_sent) {
+    if (this.state.sent) {
       return <Redirect to="/registration-confirmation" />;
     }
     const { username, email, password, password2 } = this.state;
