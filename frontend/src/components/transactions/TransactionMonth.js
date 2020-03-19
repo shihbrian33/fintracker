@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getTransactions } from "../../actions/transaction";
 import { Link } from "react-router-dom";
+import TransactionPieChart from "../charts/TransactionPieChart";
 
 function ShowModal(date) {
   const [show, setShow] = useState(false);
@@ -108,12 +109,14 @@ export class TransactionMonth extends Component {
   }
 
   render() {
-    var income = arrfilter(1, this.props.transactions);
-    var recurring = arrfilter(2, this.props.transactions);
-    var expenses = arrfilter(3, this.props.transactions);
+    var income = this.props.transactions.filter(
+      transaction => transaction.cat_type === 1
+    );
+    var expenses = this.props.transactions.filter(
+      transaction => transaction.cat_type === 2 || transaction.cat_type == 3
+    );
     var totals = {
       Income: get_total(income),
-      "Recurring Bills": get_total(recurring) * -1,
       Expenses: get_total(expenses) * -1
     };
     var total = 0;
@@ -182,12 +185,6 @@ export class TransactionMonth extends Component {
                     </td>
                   </tr>
                   <tr>
-                    <td>Recurring Bills</td>
-                    <td className="td-right neg-amount">
-                      -${get_total(recurring).toFixed(2)}
-                    </td>
-                  </tr>
-                  <tr>
                     <td>Expenses</td>
                     <td className="td-right neg-amount">
                       -${get_total(expenses).toFixed(2)}
@@ -205,23 +202,18 @@ export class TransactionMonth extends Component {
           </div>
           <div className="row mx-2 my-1">
             <TransactionTable
-              tablename="Recurring Bills"
-              data={recurring}
-              total={totals["Recurring Bills"] * -1}
+              tablename="Expense"
+              data={expenses}
+              total={totals["Expenses"] * -1}
               prev={true}
               copyYear={prevYear}
               copyMonth={prevMonth}
               currYear={this.state.year}
               currMonth={this.state.month}
             />
-          </div>
-          <div className="row mx-2 my-1">
-            <TransactionTable
-              tablename="Expenses"
-              data={expenses}
-              total={totals["Expenses"] * -1}
-              prev={false}
-            />
+            <div className="col-xl-6">
+              <TransactionPieChart data={expenses} />
+            </div>
           </div>
         </Fragment>
       );
