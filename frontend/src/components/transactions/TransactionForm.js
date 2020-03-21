@@ -14,7 +14,6 @@ export class TransactionForm extends Component {
   constructor(props) {
     super(props);
     var date = new Date();
-    date = date.toISOString().substring(0, 10);
     this.state = {
       category: 0,
       notes: null,
@@ -22,7 +21,8 @@ export class TransactionForm extends Component {
       date: date,
       merchant: null,
       card: "",
-      valid: false
+      valid: false,
+      curMonth: null
     };
   }
 
@@ -60,10 +60,25 @@ export class TransactionForm extends Component {
     var args = {
       active: 1
     };
+    var date = new Date(this.props.year, this.props.month);
+    this.setState({ curMonth: date });
     this.props.getCards(args);
   }
 
   render() {
+    var date;
+    if (this.state.curMonth) {
+      let pageMonth = this.state.curMonth.getMonth();
+      let curMonth = this.state.date.getMonth();
+      if (pageMonth == curMonth) {
+        date = this.state.date;
+      } else {
+        date = this.state.curMonth;
+      }
+    } else {
+      date = this.state.date;
+    }
+    date = date.toISOString().substring(0, 10);
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">
@@ -104,7 +119,7 @@ export class TransactionForm extends Component {
             <DatePicker
               className="form-control"
               todayButton="Today"
-              value={this.state.date}
+              value={date}
               required={true}
               showYearDropdown
               dateFormatCalendar="MMMM"

@@ -15,13 +15,9 @@ import RegConfirm from "./Users/RegConfirm";
 import { loadUser } from "../actions/auth";
 import PrivateRoute from "./common/PrivateRoute";
 import TransactionMonth from "./transactions/TransactionMonth";
+import AnalyticsMonth from "./analytics/AnalyticsMonth";
 import Category from "./category/Category";
 import Import from "./import/Import";
-
-const alertOptions = {
-  timeout: 3000,
-  position: "top center"
-};
 
 class App extends Component {
   componentDidMount() {
@@ -63,6 +59,11 @@ class App extends Component {
                     exact
                     path="/transactions/:year/:month"
                     component={TransactionMonth}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/analytics/:year/:month"
+                    component={AnalyticsMonth}
                   />
                   <PrivateRoute exact path="/categories" component={Category} />
                   <PrivateRoute exact path="/import" component={Import} />

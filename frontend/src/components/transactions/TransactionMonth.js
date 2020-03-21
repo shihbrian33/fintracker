@@ -41,16 +41,16 @@ function ShowModal(date) {
   );
 }
 
-function get_total(arr) {
+function get_total(arr, category) {
   let total = 0;
   arr.forEach(item => {
-    total += Number(item.amount);
+    if (category) {
+      if (item.cat_type == category) total += Number(item.amount);
+    } else {
+      total += Number(item.amount);
+    }
   });
   return total;
-}
-
-function arrfilter(type, data) {
-  return data.filter(transaction => transaction.cat_type === type);
 }
 
 export class TransactionMonth extends Component {
@@ -117,14 +117,27 @@ export class TransactionMonth extends Component {
     );
     var totals = {
       Income: get_total(income),
-      Expenses: get_total(expenses) * -1
+      TotExpenses: get_total(expenses),
+      Expenses: get_total(expenses, 3),
+      Recurring: get_total(expenses, 2),
+      Total: get_total(income) - get_total(expenses)
     };
-    var total = 0;
-    for (var key in totals) {
-      total += totals[key];
-    }
 
-    var totclass = total > 0 ? "pos-amount" : "neg-amount";
+    var summary = [
+      {
+        cat_name: "Net Income",
+        amount: totals["Total"]
+      },
+      {
+        cat_name: "Expenses",
+        amount: totals["Expenses"]
+      },
+      {
+        cat_name: "Recurring",
+        amount: totals["Recurring"]
+      }
+    ];
+    var totclass = totals["Total"] > 0 ? "pos-amount" : "neg-amount";
     if (this.state.loaded) {
       let prevMonth = parseInt(this.state.month, 10) - 1;
       let prevYear = parseInt(this.state.year, 10);
@@ -142,6 +155,11 @@ export class TransactionMonth extends Component {
       return (
         <Fragment>
           <h2 className="m-0 font-weight-bold text-center mb-3">
+            <Link to={`/analytics/${this.state.year}/${this.state.month}`}>
+              <span style={{ float: "left" }}>
+                <Button variant="info">Show Analytics</Button>
+              </span>
+            </Link>
             <Link to={`/transactions/${prevYear}/${prevMonth}`}>
               <span>
                 <i className="fas fa-angle-left mr-3" />
@@ -181,19 +199,25 @@ export class TransactionMonth extends Component {
                   <tr>
                     <td>Income</td>
                     <td className="td-right pos-amount">
-                      +${get_total(income).toFixed(2)}
+                      +${totals["Income"].toFixed(2)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Recurring</td>
+                    <td className="td-right neg-amount">
+                      -${totals["Recurring"].toFixed(2)}
                     </td>
                   </tr>
                   <tr>
                     <td>Expenses</td>
                     <td className="td-right neg-amount">
-                      -${get_total(expenses).toFixed(2)}
+                      -${totals["Expenses"].toFixed(2)}
                     </td>
                   </tr>
                   <tr>
                     <td>Total</td>
                     <td className={"td-right " + totclass}>
-                      <strong>${total.toFixed(2)}</strong>
+                      <strong>${totals["Total"].toFixed(2)}</strong>
                     </td>
                   </tr>
                 </tbody>
@@ -204,7 +228,7 @@ export class TransactionMonth extends Component {
             <TransactionTable
               tablename="Expense"
               data={expenses}
-              total={totals["Expenses"] * -1}
+              total={totals["TotExpenses"] * -1}
               prev={true}
               copyYear={prevYear}
               copyMonth={prevMonth}
@@ -212,7 +236,7 @@ export class TransactionMonth extends Component {
               currMonth={this.state.month}
             />
             <div className="col-xl-6">
-              <TransactionPieChart data={expenses} />
+              <TransactionPieChart data={summary} name="Summary" />
             </div>
           </div>
         </Fragment>

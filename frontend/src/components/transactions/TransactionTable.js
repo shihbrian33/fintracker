@@ -69,6 +69,7 @@ export class TransactionTable extends Component {
   render() {
     var totals = {};
     var notes = {};
+    var recurring = {};
     for (var i in this.props.data) {
       let amount = this.props.data[i].amount;
       let name = this.props.data[i].cat_name;
@@ -77,6 +78,9 @@ export class TransactionTable extends Component {
         : Number(amount);
       if (this.props.data[i].notes) {
         notes[name] = 1;
+      }
+      if (this.props.data[i].cat_type == 2) {
+        recurring[name] = 1;
       }
     }
     return (
@@ -115,9 +119,14 @@ export class TransactionTable extends Component {
               >
                 <td>
                   {name}
-                  {notes[name] && (
+                  {notes[name] && recurring[name] && (
                     <span style={{ float: "right" }}>
                       <i className="far fa-sticky-note" />
+                    </span>
+                  )}
+                  {recurring[name] && (
+                    <span style={{ float: "right" }}>
+                      <i className="fas fa-redo mr-1" />
                     </span>
                   )}
                 </td>
